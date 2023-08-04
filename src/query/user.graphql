@@ -1,0 +1,51 @@
+query getUsers($name: String!) {
+  users(name: $name) {
+    _id
+    name
+    image
+    email
+  }
+}
+
+query getUser($id: ID!, $userId: ID) {
+  user(id: $id, userId: $userId) {
+    _id
+    name
+    image
+    bio
+    email
+    following {
+      count
+    }
+    followers(userId: $userId) {
+      count
+    }
+    isFollowing(userId: $userId)
+    thread {
+      _id
+      userId
+      media
+      timeStamp
+      content
+      likes
+      # thread
+      # replies
+    }
+  }
+}
+
+mutation registerUser($user: UserInput!) {
+  registerUser(user: $user) {
+    name
+    email
+    image
+  }
+}
+
+mutation followUser($action: ActionFollowInput!) {
+  follow(action: $action)
+}
+
+mutation unfollowUser($action: ActionFollowInput!) {
+  unFollow(action: $action)
+}

@@ -1,0 +1,17 @@
+query getActivities($userId: ID!) {
+  activity(userId: $userId) {
+    timeStamp
+    action
+    to
+    thread {
+      _id
+      content
+    }
+    from {
+      _id
+      name
+      image
+      email
+    }
+  }
+}

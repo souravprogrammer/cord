@@ -1,0 +1,23 @@
+mutation createThread($thread: CreateThreadInput!) {
+  createThread(thread: $thread) {
+    _id
+    userId
+    content
+    media
+  }
+}
+
+query getHomeThreads($userId: String!) {
+  getHomeThreads(userId: $userId) {
+    _id
+    userId
+    name
+    email
+    image
+    content
+    media
+    timeStamp
+    likes
+    liked
+  }
+}

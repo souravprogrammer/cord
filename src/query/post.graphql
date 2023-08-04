@@ -1,0 +1,6 @@
+mutation likePost($action: LikeInput!) {
+  like(action: $action)
+}
+mutation unlike($action: LikeInput!) {
+  unLike(action: $action)
+}
