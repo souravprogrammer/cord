@@ -2,13 +2,7 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextPage } from "next";
-import {
-  ComponentType,
-  ReactElement,
-  ReactNode,
-  useMemo,
-  useState,
-} from "react";
+import { ComponentType, ReactElement, ReactNode, useMemo } from "react";
 import getDesignTheme from "@/components/theme/getDesignTheme";
 import { QueryClientProvider, Hydrate } from "react-query";
 import { queryClient } from "@/utils/QueryClient";

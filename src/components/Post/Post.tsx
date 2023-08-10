@@ -16,7 +16,6 @@ import Link from "next/dist/client/link";
 
 import { Avatar } from "@mui/material";
 import { Thread, User } from "@/Type";
-import { type } from "os";
 
 type LikeAction = {
   action: {
@@ -61,8 +60,14 @@ export default function Post({ user, thread, ...props }: Props) {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: { md: "center", sm: "start", xs: "start" },
+          flexDirection: {
+            md: "row",
+            sm: "column",
+            xs: "column",
+          },
           gridArea: "name",
+          // border: "1px solid red",
         }}
       >
         <Link
@@ -72,17 +77,32 @@ export default function Post({ user, thread, ...props }: Props) {
           <Typography
             fontWeight={"bold"}
             variant="body2"
-            sx={{ paddingRight: "4px" }}
+            sx={{ paddingRight: "4px", whiteSpace: "nowrap" }}
           >
             {user?.name}
           </Typography>
         </Link>
-        <Typography variant="body2" sx={{ color: "grey" }}>
-          {user?.email}
-        </Typography>
-        <Typography variant="body2" sx={{ color: "grey", px: "8px" }}>
-          {formatDate(parseInt(thread?.timeStamp))}
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: "grey",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {user?.email}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "grey", px: "8px" }}>
+            {formatDate(parseInt(thread?.timeStamp))}
+          </Typography>
+        </Box>
       </Box>
       <Box sx={{ gridArea: "content" }}>
         <Typography>{thread?.content}</Typography>
@@ -168,11 +188,6 @@ function formatDate(milliseconds: number): string {
   const targetDate = milliseconds;
   const currentDate = new Date().getTime();
 
-  console.log({
-    targetDate,
-    currentDate,
-    diff: currentDate - targetDate,
-  });
   const hour = Math.round((currentDate - targetDate) / millisecondsInHour);
   const min = Math.round((currentDate - targetDate) / millisecondsInMinute);
   if (min <= 60) {

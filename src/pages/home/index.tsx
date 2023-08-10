@@ -12,6 +12,7 @@ import { Thread, User } from "@/Type";
 import { useStore } from "@/utils";
 import { StoreState } from "@/utils/Store";
 import { likePost, unlike } from "@/utils/QueryClient";
+import Box from "@mui/material/Box";
 type Props = { user: User };
 
 export default function Index({ user }: Props) {
@@ -55,10 +56,10 @@ export default function Index({ user }: Props) {
   };
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "grid",
-        gridTemplateColumns: "3fr 1fr",
+        gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "3fr 1fr" },
         gap: "8px",
         height: "100%",
       }}
@@ -87,12 +88,22 @@ export default function Index({ user }: Props) {
           );
         })}
       </div>
-      <StickyWrapper sx={{ height: "300px" }}>
-        <Paper>
-          <ProfileSide user={user} />
-        </Paper>
-      </StickyWrapper>
-    </div>
+      <Box
+        sx={{
+          display: {
+            xs: "none",
+            sm: "none",
+            md: "block",
+          },
+        }}
+      >
+        <StickyWrapper sx={{ height: "300px" }}>
+          <Paper>
+            <ProfileSide user={user} />
+          </Paper>
+        </StickyWrapper>
+      </Box>
+    </Box>
   );
 }
 Index.getLayout = UserLayout;

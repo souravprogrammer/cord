@@ -77,14 +77,16 @@ export default function Index({ user, myProfile }: Props) {
           sx={{
             padding: 2,
             display: "grid",
-            gridTemplateColumns: "1fr 2fr",
+            gridTemplateColumns: { sm: "1fr", md: "1fr 2fr" },
+            // border: "1px solid red",
           }}
         >
           <Avatar
             sizes="large"
             sx={{
-              height: "152px",
-              width: "152px",
+              height: { xs: "85px", sm: "112px", md: "152px" },
+              width: { xs: "85px", sm: "112px", md: "152px" },
+              // border: "1px solid red",
               alignSelf: "center",
               justifySelf: "center",
             }}
@@ -100,48 +102,96 @@ export default function Index({ user, myProfile }: Props) {
           <Box
             sx={{
               display: "grid",
-              padding: "16px",
+              padding: { xs: "8px", sm: "8px", md: "16px" },
               rowGap: "8px",
               columnGap: "12px",
-              gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              gridTemplateAreas: `
+              gridTemplateColumns: {
+                xs: "1fr 1fr 1fr 1fr",
+                sm: "1fr 1fr 1fr 1fr",
+                md: "1fr 1fr 1fr 1fr",
+              },
+              // border: "1px solid green",
+              gridTemplateAreas: {
+                xs: `
+               'un un followbtn followbtn'
+               'th follow following el2' 
+               'name name actions el3'
+               'bio bio bio bio'
+                `,
+                sm: `
+                'un un un followbtn'
+                'th follow following el2' 
+                'name name actions el3'
+                'bio bio bio bio'
+                `,
+                md: `
           'un un followbtn el'
-          'th follow following el2'
+          'th follow following el2' 
           'name actions actions el3'
           'bio bio bio bio'
           `,
+              },
             }}
           >
             <Typography
-              sx={{ gridArea: "un", alignSelf: "center" }}
+              sx={{
+                gridArea: { md: "un", sm: "un", xs: "un" },
+                alignSelf: "center",
+              }}
               fontWeight={"bold"}
             >
               {data?.user?.email}
             </Typography>
-            <Typography sx={{ gridArea: "th" }}>
+            <Typography
+              sx={{
+                // display: { xs: "none", sm: "none", md: "block" },
+                gridArea: "th",
+                whiteSpace: "nowrap",
+              }}
+            >
               <span style={{ fontWeight: "bold" }}>
                 {data?.user?.thread?.length}
               </span>{" "}
               Threads
             </Typography>
-            <Typography sx={{ gridArea: "follow" }}>
+            <Typography
+              sx={{
+                // display: { xs: "none", sm: "none", md: "block" },
+
+                gridArea: "follow",
+                whiteSpace: "nowrap",
+              }}
+            >
               {" "}
               <span style={{ fontWeight: "bold" }}>
                 {data?.user?.followers?.count}
               </span>{" "}
               followers
             </Typography>
-            <Typography sx={{ gridArea: "following" }}>
+            <Typography
+              sx={{
+                // display: { xs: "none", sm: "none", md: "block" },
+
+                gridArea: "following",
+                whiteSpace: "nowrap",
+              }}
+            >
               <span style={{ fontWeight: "bold" }}>
                 {data?.user?.following?.count}
               </span>{" "}
               following
             </Typography>
-            <Typography sx={{ gridArea: "name", fontWeight: "bold" }}>
+            <Typography
+              sx={{
+                gridArea: { md: "name", sm: "name", xs: "name" },
+                fontWeight: "bold",
+                whiteSpace: "nowrap",
+              }}
+            >
               {/* sourav sharma */}
               {data?.user?.name}
             </Typography>
-            <Typography sx={{ gridArea: "bio" }}>
+            <Typography sx={{ gridArea: { md: "bio", sm: "bio", xs: "bio" } }}>
               {data?.user?.bio}
               This world is curl but its also a very beautiful creator of
               dogesan & Arrayanime
@@ -151,7 +201,11 @@ export default function Index({ user, myProfile }: Props) {
                 variant={data.user.isFollowing ? "outlined" : "contained"}
                 size="small"
                 sx={{
-                  gridArea: "followbtn",
+                  gridArea: {
+                    md: "followbtn",
+                    xs: "followbtn",
+                    sm: "followbtn",
+                  },
                   height: "26px",
                   alignSelf: "center",
                 }}
