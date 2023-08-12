@@ -73,10 +73,19 @@ export default function Index({ user }: Props) {
           flexDirection: "column",
           gap: "8px",
           height: "100%",
-          // border: "1px solid red",
         }}
       >
-        <CreatePost user={user} />
+        <Box
+          sx={{
+            display: {
+              xs: "none",
+              sm: "none",
+              md: "block",
+            },
+          }}
+        >
+          <CreatePost user={user} />
+        </Box>
         {therads?.getHomeThreads?.map((thread: any, index) => {
           return (
             <Post

@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 
-export type ActivePageType = "home" | "activity" | "profile";
+export type ActivePageType = "home" | "activity" | "profile" | "search";
 
 export interface NavigationType {
   activePage: ActivePageType;

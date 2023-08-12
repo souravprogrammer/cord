@@ -13,15 +13,19 @@ import { useMutation } from "react-query";
 import { createThread } from "@/utils/QueryClient";
 import { User } from "@/Type";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { getSession, GetSessionParams, useSession } from "next-auth/react";
+
 type Props = {
-  user: User;
+  user?: User;
 };
 
-export default function CreatePost({ user }: Props) {
+export default function CreatePost({}: Props) {
   const [text, setText] = useState<string>("");
   const [images, setImages] = useState<Array<File>>([]);
   const [disable, setDisable] = useState(true);
   const InputImagesRef = useRef<React.RefObject<HTMLInputElement> | any>();
+  const session = useSession();
+  const user: User = session.data?.user as User;
 
   const { mutate, isLoading } = useMutation({
     mutationFn: createThread,
@@ -73,7 +77,7 @@ export default function CreatePost({ user }: Props) {
 
     mutate({
       thread: {
-        userId: user.id,
+        userId: user?.id,
         content: text,
         media: result ? [result.secure_url] : [],
       },
@@ -106,7 +110,7 @@ export default function CreatePost({ user }: Props) {
         <Avatar
           sx={{ bgcolor: "orange" }}
           alt="profile picture"
-          src={user.image}
+          src={user?.image}
         >
           NM
         </Avatar>
@@ -165,11 +169,15 @@ export default function CreatePost({ user }: Props) {
           })}
         </Box>
       </Box>
-      <div
-        style={{
+      <Paper
+        sx={{
           gridArea: "space",
           display: "flex",
           justifyContent: "space-between",
+          position: "fixed",
+          bottom: "0",
+          left: 0,
+          width: "100%",
         }}
       >
         <div>
@@ -210,7 +218,7 @@ export default function CreatePost({ user }: Props) {
         >
           Post
         </Button>
-      </div>
+      </Paper>
     </Paper>
   );
 }

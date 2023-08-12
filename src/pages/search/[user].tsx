@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import UserLayout from "@/components/Layouts/UserLayout";
 import ProfileSide from "@/components/nav/ProfileSide";
@@ -10,6 +10,7 @@ import { User } from "@/Type";
 import { useRouter } from "next/dist/client/router";
 import { getUsers } from "@/utils/QueryClient";
 import { useQuery } from "react-query";
+import Box from "@mui/material/Box";
 type Props = {
   result: any;
 };
@@ -24,10 +25,10 @@ export default function User({}: Props) {
   );
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "grid",
-        gridTemplateColumns: "3fr 1fr",
+        gridTemplateColumns: { sm: "1fr", xs: "1fr", md: "3fr 1fr" },
         gap: "8px",
       }}
     >
@@ -44,12 +45,21 @@ export default function User({}: Props) {
           return <UserSearch key={user._id} user={user} />;
         })}
       </div>
-      <StickyWrapper sx={{ height: "300px" }}>
+      <StickyWrapper
+        sx={{
+          display: {
+            md: "block",
+            sm: "none",
+            xs: "none",
+          },
+          height: "300px",
+        }}
+      >
         <Paper>
           <ProfileSide user={session.data?.user ?? ({} as any)} />
         </Paper>
       </StickyWrapper>
-    </div>
+    </Box>
   );
 }
 

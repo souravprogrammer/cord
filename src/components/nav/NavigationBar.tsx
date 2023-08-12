@@ -11,6 +11,7 @@ import { useStore } from "@/utils";
 import PersonIcon from "@mui/icons-material/Person";
 import Paper from "@mui/material/Paper";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
@@ -55,11 +56,18 @@ const SidebarListMobile = [
     page: "activity",
     path: "/activity",
   },
+
   {
     title: "profile",
     Icon: PersonIcon,
     page: "profile",
     path: "/profile",
+  },
+  {
+    title: "Search",
+    Icon: SearchIcon,
+    page: "*",
+    path: "/search/",
   },
 ];
 const SideList = () => {
@@ -75,6 +83,8 @@ const SideList = () => {
       changePage("home");
     } else if (router.pathname.includes("activity")) {
       changePage("activity");
+    } else if (router.pathname.includes("/search")) {
+      changePage("search");
     }
   }, []);
 
@@ -85,6 +95,8 @@ const SideList = () => {
       setValue(1);
     } else if (activePage === "profile") {
       setValue(2);
+    } else if (activePage === "search") {
+      setValue(3);
     }
   }, [activePage]);
 
@@ -161,6 +173,10 @@ const SideList = () => {
               <BottomNavigationAction
                 onClick={() => {
                   changePage(item.page as any);
+
+                  // if (item.path.includes("*")) {
+                  //   return;
+                  // }
                   if (item.path.includes("profile")) {
                     router.push(
                       item.path + "/" + (session.data?.user as User).id
