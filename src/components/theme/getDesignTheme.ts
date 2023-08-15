@@ -14,6 +14,12 @@ const getDesignTheme = (mode: string) => ({
                 //   main: "#EA6823",
                 //   dark: "#fb8c00",
                 // },
+                disable: {
+                    light: "#8b8e9d",
+                    main: "#74788d",
+                    dark: "#636678",
+                    contrastText: "#fff",
+                },
                 followingButton: {
                     main: "rgba(0,0,0,0.5)"
                 }

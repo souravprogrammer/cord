@@ -1,5 +1,18 @@
-import { Container, InputBase } from "@mui/material";
-import React, { useEffect, useState, useTransition, useCallback } from "react";
+import {
+  Container,
+  InputBase,
+  SwipeableDrawer,
+  Grid,
+  ButtonBase,
+  Typography,
+} from "@mui/material";
+import React, {
+  useEffect,
+  useState,
+  useTransition,
+  useCallback,
+  useRef,
+} from "react";
 import FlutterDashIcon from "@mui/icons-material/FlutterDash";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -10,6 +23,9 @@ import { useRouter } from "next/dist/client/router";
 import Link from "@mui/material/Link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ShortTextIcon from "@mui/icons-material/ShortText";
+import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
+import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
+import { signOut } from "next-auth/react";
 type Props = {
   sear?: string;
 };
@@ -17,8 +33,10 @@ type Props = {
 export default function Header({ sear }: Props) {
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const showSearch: boolean = router.pathname.includes("/search");
+  const ref = useRef<any>();
   // const [width, setWidth] = useState(900);
 
   // const [isPending, transistion] = useTransition();
@@ -182,6 +200,7 @@ export default function Header({ sear }: Props) {
           </Paper>
         </Box>
         <IconButton
+          onClick={() => setOpenModal(true)}
           sx={{
             display: showSearch ? "none" : "flex",
           }}
@@ -189,6 +208,146 @@ export default function Header({ sear }: Props) {
           <ShortTextIcon />
         </IconButton>
       </Container>
+      <SwipeableDrawer
+        sx={{
+          display: {
+            xs: "block",
+            sm: "block",
+            md: "none",
+          },
+        }}
+        container={ref.current as any}
+        open={openModal}
+        anchor="bottom"
+        onClose={() => {
+          setOpenModal(false);
+        }}
+        onOpen={() => {
+          setOpenModal(true);
+        }}
+        swipeAreaWidth={0}
+        disableSwipeToOpen={false}
+        ModalProps={{
+          keepMounted: false,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: 2,
+            padding: "16px 8px",
+          }}
+        >
+          <ButtonBase
+            color="error"
+            sx={(theme: any) => ({
+              height: "40px",
+              display: "flex",
+
+              borderRadius: "4px",
+              bgcolor: `${theme.palette.disable.light}20`,
+              width: "100%",
+              transition: "all 0.3s",
+              "&:hover": {
+                bgcolor: `${theme.palette.disable.light}50`,
+              },
+            })}
+          >
+            <Grid
+              item
+              xs={2}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <RoomPreferencesIcon sx={{ ml: "15px" }} />
+            </Grid>
+            <Grid
+              item
+              xs={10}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  fontFamily: "Roboto,sans-serif",
+                  pr: "30px",
+                  textTransform: "capitalize",
+                }}
+              >
+                Settings
+              </Typography>
+            </Grid>
+          </ButtonBase>
+          <ButtonBase
+            color="error"
+            onClick={async () => {
+              signOut();
+            }}
+            sx={(theme) => ({
+              height: "40px",
+              display: "flex",
+
+              borderRadius: "4px",
+              bgcolor: `${theme.palette.error.main}50`,
+              width: "100%",
+              transition: "all 0.3s",
+              "&:hover": {
+                bgcolor: `${theme.palette.error}80`,
+              },
+            })}
+          >
+            <>
+              <Grid
+                item
+                xs={2}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <PowerSettingsNewOutlinedIcon
+                  color="error"
+                  sx={{ ml: "15px" }}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={10}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontFamily: "Roboto,sans-serif",
+
+                    pr: "30px",
+                    cursor: "pointer",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  logout
+                </Typography>
+              </Grid>
+            </>
+          </ButtonBase>
+        </Box>
+      </SwipeableDrawer>
     </Paper>
   );
 }

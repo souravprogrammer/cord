@@ -35,6 +35,7 @@ export default function Post({ user, thread, ...props }: Props) {
         padding: "16px",
         display: "grid",
         gridTemplateColumns: "48px 1fr 32px",
+
         gap: "12px",
         maxWidth: "100%",
         gridTemplateAreas: `
@@ -67,7 +68,6 @@ export default function Post({ user, thread, ...props }: Props) {
             xs: "column",
           },
           gridArea: "name",
-          // border: "1px solid red",
         }}
       >
         <Link
@@ -95,11 +95,27 @@ export default function Post({ user, thread, ...props }: Props) {
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
+              fontSize: {
+                xs: "10px",
+                sm: "12px",
+                md: "14px",
+              },
             }}
           >
             {user?.email}
           </Typography>
-          <Typography variant="body2" sx={{ color: "grey", px: "8px" }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "grey",
+              px: "8px",
+              fontSize: {
+                xs: "10px",
+                sm: "12px",
+                md: "14px",
+              },
+            }}
+          >
             {formatDate(parseInt(thread?.timeStamp))}
           </Typography>
         </Box>

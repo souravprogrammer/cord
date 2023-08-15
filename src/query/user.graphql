@@ -28,6 +28,8 @@ query getUser($id: ID!, $userId: ID) {
       timeStamp
       content
       likes
+      liked
+
       # thread
       # replies
     }

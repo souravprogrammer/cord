@@ -170,11 +170,12 @@ export default function CreatePost({}: Props) {
         </Box>
       </Box>
       <Paper
+        elevation={0}
         sx={{
           gridArea: "space",
           display: "flex",
           justifyContent: "space-between",
-          position: "fixed",
+          position: { sm: "fixed", xs: "fixed", md: "inherit" },
           bottom: "0",
           left: 0,
           width: "100%",

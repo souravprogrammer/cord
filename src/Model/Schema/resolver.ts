@@ -291,11 +291,34 @@ export const resolver = {
                     }
 
                 },
-                // {
-                //     $project: {
-                //         timeStamp: 0,
-                //     }
-                // }
+                {
+                    $lookup:
+                    {
+                        from: "likes",
+                        let: {
+                            userId: "$userId",
+                            threadId: "$_id"
+                        },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$userId", new mongoose.Types.ObjectId(parent._id)] },
+                                            { $eq: ["$threadId", "$$threadId"] }
+                                        ]
+                                    }
+                                }
+                            },
+                        ],
+                        as: "like"
+                    }
+                },
+                {
+                    $addFields: {
+                        liked: { $gt: [{ $size: "$like" }, 0] }
+                    }
+                },
             ])
             return [...threads]
 

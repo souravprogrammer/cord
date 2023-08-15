@@ -16,6 +16,7 @@ import {
 } from "@/utils/QueryClient";
 import { dehydrate, useMutation, useQuery, useQueryClient } from "react-query";
 import { NextRouter, useRouter } from "next/dist/client/router";
+import { likePost, unlike } from "@/utils/QueryClient";
 
 interface userProfileType extends User {
   following: { count: number };
@@ -49,6 +50,18 @@ export default function Index({ user, myProfile }: Props) {
       queryclient.invalidateQueries(["profile", router.query.profile?.[0]]);
     },
   });
+  const { mutate: mutateLikePost } = useMutation({
+    mutationFn: likePost,
+    onSuccess: () => {
+      queryclient.invalidateQueries(["profile", router.query.profile?.[0]]);
+    },
+  });
+  const { mutate: mutateunLikePost } = useMutation({
+    mutationFn: unlike,
+    onSuccess: () => {
+      queryclient.invalidateQueries(["profile", router.query.profile?.[0]]);
+    },
+  });
 
   const onFollowhandler = async () => {
     if (data.user.isFollowing) {
@@ -67,6 +80,20 @@ export default function Index({ user, myProfile }: Props) {
       });
     }
   };
+
+  const handlePostLikeDisLike = async (
+    action: {
+      action: { threadId: string };
+    },
+    liked: boolean
+  ) => {
+    if (liked) {
+      mutateunLikePost({ action: { ...action.action, userId: user.id } });
+    } else {
+      mutateLikePost({ action: { ...action.action, userId: user.id } });
+    }
+  };
+
   useEffect(() => {
     console.log("profile Data", data);
   }, [data]);
@@ -78,7 +105,6 @@ export default function Index({ user, myProfile }: Props) {
             padding: 2,
             display: "grid",
             gridTemplateColumns: { sm: "1fr", md: "1fr 2fr" },
-            // border: "1px solid red",
           }}
         >
           <Avatar
@@ -86,7 +112,7 @@ export default function Index({ user, myProfile }: Props) {
             sx={{
               height: { xs: "85px", sm: "112px", md: "152px" },
               width: { xs: "85px", sm: "112px", md: "152px" },
-              // border: "1px solid red",
+
               alignSelf: "center",
               justifySelf: "center",
             }}
@@ -110,7 +136,6 @@ export default function Index({ user, myProfile }: Props) {
                 sm: "1fr 1fr 1fr 1fr",
                 md: "1fr 1fr 1fr 1fr",
               },
-              // border: "1px solid green",
               gridTemplateAreas: {
                 xs: `
                'un un followbtn followbtn'
@@ -144,7 +169,6 @@ export default function Index({ user, myProfile }: Props) {
             </Typography>
             <Typography
               sx={{
-                // display: { xs: "none", sm: "none", md: "block" },
                 gridArea: "th",
                 whiteSpace: "nowrap",
               }}
@@ -156,8 +180,6 @@ export default function Index({ user, myProfile }: Props) {
             </Typography>
             <Typography
               sx={{
-                // display: { xs: "none", sm: "none", md: "block" },
-
                 gridArea: "follow",
                 whiteSpace: "nowrap",
               }}
@@ -170,8 +192,6 @@ export default function Index({ user, myProfile }: Props) {
             </Typography>
             <Typography
               sx={{
-                // display: { xs: "none", sm: "none", md: "block" },
-
                 gridArea: "following",
                 whiteSpace: "nowrap",
               }}
@@ -188,7 +208,6 @@ export default function Index({ user, myProfile }: Props) {
                 whiteSpace: "nowrap",
               }}
             >
-              {/* sourav sharma */}
               {data?.user?.name}
             </Typography>
             <Typography sx={{ gridArea: { md: "bio", sm: "bio", xs: "bio" } }}>
@@ -235,6 +254,7 @@ export default function Index({ user, myProfile }: Props) {
         {data?.user?.thread.map((thread: any) => {
           return (
             <Post
+              onLike={handlePostLikeDisLike}
               key={thread._id}
               user={data?.user as User}
               thread={thread as Thread}

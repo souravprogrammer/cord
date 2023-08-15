@@ -33,12 +33,12 @@ export default function UserLayout(Page: ReactNode, pageProps: any) {
 
   const handleWindowResize = useCallback((event: any) => {
     transistion(() => {
-      setWidth(window.screen.width);
+      setWidth(window.innerWidth);
     });
   }, []);
 
   useEffect(() => {
-    setWidth(window.screen.width);
+    setWidth(window.innerWidth);
   }, []);
 
   useEffect(() => {

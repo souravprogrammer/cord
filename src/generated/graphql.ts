@@ -26,7 +26,7 @@ export type Activity = {
   __typename?: 'Activity';
   action: Scalars['String']['output'];
   from: User;
-  thread: Thread;
+  thread?: Maybe<Thread>;
   threadId: Scalars['String']['output'];
   timeStamp: Scalars['String']['output'];
   to: Scalars['String']['output'];
@@ -176,7 +176,7 @@ export type GetActivitiesQueryVariables = Exact<{
 }>;
 
 
-export type GetActivitiesQuery = { __typename?: 'Query', activity?: Array<{ __typename?: 'Activity', timeStamp: string, action: string, to: string, thread: { __typename?: 'Thread', _id: string, content?: string | null }, from: { __typename?: 'User', _id: string, name: string, image?: string | null, email: string } }> | null };
+export type GetActivitiesQuery = { __typename?: 'Query', activity?: Array<{ __typename?: 'Activity', timeStamp: string, action: string, to: string, thread?: { __typename?: 'Thread', _id: string, content?: string | null } | null, from: { __typename?: 'User', _id: string, name: string, image?: string | null, email: string } }> | null };
 
 export type LikePostMutationVariables = Exact<{
   action: LikeInput;
@@ -219,7 +219,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, name: string, image?: string | null, bio?: string | null, email: string, isFollowing: boolean, following?: { __typename?: 'follow', count: number } | null, followers?: { __typename?: 'follow', count: number } | null, thread?: Array<{ __typename?: 'Thread', _id: string, userId: string, media?: Array<string> | null, timeStamp: string, content?: string | null, likes?: number | null }> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, name: string, image?: string | null, bio?: string | null, email: string, isFollowing: boolean, following?: { __typename?: 'follow', count: number } | null, followers?: { __typename?: 'follow', count: number } | null, thread?: Array<{ __typename?: 'Thread', _id: string, userId: string, media?: Array<string> | null, timeStamp: string, content?: string | null, likes?: number | null, liked?: boolean | null }> | null } | null };
 
 export type RegisterUserMutationVariables = Exact<{
   user: UserInput;
@@ -330,6 +330,7 @@ export const GetUserDocument = gql`
       timeStamp
       content
       likes
+      liked
     }
   }
 }
