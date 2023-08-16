@@ -41,7 +41,9 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
     <Paper elevation={reposted ? 0 : 1}>
       <Box
         sx={{
-          padding: reposted ? "0px" : "16px",
+          padding: reposted ? "6px" : "16px",
+          border: reposted ? "1px solid rgba(0,0,0,0.2)" : "",
+          borderRadius: "6px",
           display: "grid",
           gridTemplateColumns: {
             sm: "28px 1fr 32px",
@@ -49,7 +51,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
             md: "48px 1fr 32px",
           },
 
-          gap: "12px",
+          gap: { xs: "4px", sm: "8px", md: "12px" },
           maxWidth: "100%",
           gridTemplateAreas: `
         'avatar name options'

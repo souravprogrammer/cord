@@ -34,6 +34,82 @@ const getThreads = async (parent: any, args: any) => {
 async function getHomeThreads(parent: any, arg: any) {
     // now here am getting  the threads for the user home 
 
+    // const threads: any = await Follow.aggregate([
+    //     {
+    //         $match: {
+    //             follow: new mongoose.Types.ObjectId(arg.userId)
+    //         }
+    //     },
+    //     {
+    //         $lookup:
+    //         {
+    //             from: "threads",
+    //             localField: "followedUser",
+    //             foreignField: "userId",
+    //             as: "threads"
+    //         }
+    //     },
+    //     {
+    //         $lookup:
+    //         {
+    //             from: "users",
+    //             localField: "followedUser",
+    //             foreignField: "_id",
+    //             as: "user"
+    //         }
+    //     },
+    //     {
+    //         $unwind: "$threads"
+    //     },
+    //     {
+    //         $unwind: "$user"
+    //     },
+    //     {
+    //         $project: {
+    //             _id: "$threads._id",
+    //             userId: "$threads.userId",
+    //             content: "$threads.content",
+    //             likes: "$threads.likes",
+    //             timeStamp: "$threads.timeStamp",
+    //             media: "$threads.media",
+    //             name: "$user.name",
+    //             image: "$user.image",
+    //             email: "$user.email"
+    //         }
+    //     }, {
+    //         $lookup:
+    //         {
+    //             from: "likes",
+    //             let: {
+    //                 userId: "$userId",
+    //                 threadId: "$_id"
+    //             },
+    //             pipeline: [
+    //                 {
+    //                     $match: {
+    //                         $expr: {
+    //                             $and: [
+    //                                 { $eq: ["$userId", new mongoose.Types.ObjectId(arg.userId)] },
+    //                                 { $eq: ["$threadId", "$$threadId"] }
+    //                             ]
+    //                         }
+    //                     }
+    //                 },
+    //             ],
+    //             as: "like"
+    //         }
+    //     },
+    //     {
+    //         $addFields: {
+    //             liked: { $gt: [{ $size: "$like" }, 0] }
+    //         }
+    //     },
+    //     {
+    //         $sort: {
+    //             timestamp: -1 // Sort by timestamp in descending order to get the latest threads first
+    //         }
+    //     },
+    // ]);
     const threads: any = await Follow.aggregate([
         {
             $match: {
@@ -44,22 +120,37 @@ async function getHomeThreads(parent: any, arg: any) {
             $lookup:
             {
                 from: "threads",
-                localField: "followedUser",
-                foreignField: "userId",
+                let: {
+                    followedUser: "$followedUser",
+                    user: new mongoose.Types.ObjectId(arg.userId)
+                },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $or: [
+                                    { $eq: ["$userId", "$$user"] },
+                                    { $eq: ["$userId", "$$followedUser"] }
+                                ]
+                            }
+                        }
+                    },
+                ],
                 as: "threads"
             }
+        },
+
+        {
+            $unwind: "$threads"
         },
         {
             $lookup:
             {
                 from: "users",
-                localField: "followedUser",
+                localField: "threads.userId",
                 foreignField: "_id",
                 as: "user"
             }
-        },
-        {
-            $unwind: "$threads"
         },
         {
             $unwind: "$user"
@@ -71,6 +162,7 @@ async function getHomeThreads(parent: any, arg: any) {
                 content: "$threads.content",
                 likes: "$threads.likes",
                 timeStamp: "$threads.timeStamp",
+                threadId: "$threads.threadId",
                 media: "$threads.media",
                 name: "$user.name",
                 image: "$user.image",
@@ -105,8 +197,27 @@ async function getHomeThreads(parent: any, arg: any) {
             }
         },
         {
+            $group: {
+                _id: "$_id",
+                userId: { $first: "$userId" },
+                content: { $first: "$content" },
+                likes: { $first: "$likes" },
+                timeStamp: { $first: "$timeStamp" },
+                media: { $first: "$media" },
+                name: { $first: "$name" },
+                image: { $first: "$image" },
+                email: { $first: "$email" },
+                liked: { $first: "$liked" },
+                threadId: { $first: "$threadId" },
+
+
+
+            }
+        },
+        {
             $sort: {
-                timestamp: -1 // Sort by timestamp in descending order to get the latest threads first
+                _id: -1,
+                // timestamp: 1 // Sort by timestamp in descending order to get the latest threads first
             }
         },
     ]);
@@ -389,6 +500,8 @@ export const resolver = {
                 }
             }
             ])
+
+
             return thread[0];
 
         }
