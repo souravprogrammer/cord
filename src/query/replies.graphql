@@ -1,0 +1,9 @@
+mutation creteReplly($replly: CreateRepllyInput!) {
+  createReplly(replly: $replly) {
+    _id
+    userId
+    name
+    image
+    content
+  }
+}

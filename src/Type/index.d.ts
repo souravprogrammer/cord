@@ -26,8 +26,8 @@ export interface Post {
     _id: string
 }
 export interface Thread extends Post {
-    thread?: string;
-    replies?: Replies;
+    thread?: Thread;
+    replies?: [Replies];
 }
 
 export interface Replies extends Post {

@@ -2,6 +2,7 @@ import { User } from "@/Model/user/User"
 import { Thread } from "../thread/thread";
 import { Follow } from "@/Model/followFollowing/Follow"
 import { Like } from "@/Model/like/Like";
+import { Replies } from "@/Model/replies/Replies"
 import { Thread as Th, User as UserType } from "@/Type";
 import { Activity } from "../activity/Activity";
 import mongoose from "mongoose";
@@ -135,6 +136,7 @@ export const resolver = {
     },
     Mutation: {
         createThread: async (parent: any, { thread }: { thread: Th }) => {
+            console.log("thread ", thread)
             try {
                 const newThread = new Thread({
                     ...thread,
@@ -224,6 +226,14 @@ export const resolver = {
             await Promise.allSettled([ac, unlike])
             return true
 
+        },
+        createReplly: async (parent: any, arg: { replly: any }) => {
+            try {
+                const replly = new Replies({ ...arg.replly })
+                return await replly.save()
+            } catch (err) {
+                return err
+            }
         }
     },
     User: {
@@ -345,12 +355,43 @@ export const resolver = {
             })
 
         }
-    }
-    // Thread: {
-    //     thread: (parent: any, args: any) => {
-    //         // get the nested thread here 
+    },
+    Thread: {
+        thread: async (parent: any, args: any) => {
+            // get the nested thread here 
+            const thread = await Thread.aggregate([{
+                $match: {
+                    _id: new mongoose.Types.ObjectId(parent.threadId)
+                },
+            },
+            {
+                $lookup:
+                {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            }, {
+                $unwind: "$user"
+            },
+            {
+                $project: {
+                    _id: "$_id",
+                    userId: "$userId",
+                    content: "$content",
+                    likes: "$likes",
+                    timeStamp: "$timeStamp",
+                    media: "$media",
+                    name: "$user.name",
+                    image: "$user.image",
+                    email: "$user.email"
+                }
+            }
+            ])
+            return thread[0];
 
-    //     }
-    // }
+        }
+    }
 
 }

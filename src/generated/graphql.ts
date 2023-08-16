@@ -32,9 +32,17 @@ export type Activity = {
   to: Scalars['String']['output'];
 };
 
+export type CreateRepllyInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  media?: InputMaybe<Array<Scalars['String']['input']>>;
+  threadId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
 export type CreateThreadInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   media?: InputMaybe<Array<Scalars['String']['input']>>;
+  threadId?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['String']['input'];
 };
 
@@ -45,12 +53,18 @@ export type LikeInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createReplly?: Maybe<Thread>;
   createThread?: Maybe<Thread>;
   follow: Scalars['Boolean']['output'];
   like: Scalars['Boolean']['output'];
   registerUser?: Maybe<User>;
   unFollow: Scalars['Boolean']['output'];
   unLike: Scalars['Boolean']['output'];
+};
+
+
+export type MutationCreateRepllyArgs = {
+  replly: CreateRepllyInput;
 };
 
 
@@ -130,6 +144,7 @@ export type Thread = {
   name?: Maybe<Scalars['String']['output']>;
   replies?: Maybe<Thread>;
   thread?: Maybe<Thread>;
+  threadId?: Maybe<Scalars['String']['output']>;
   timeStamp: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
@@ -192,6 +207,13 @@ export type UnlikeMutationVariables = Exact<{
 
 export type UnlikeMutation = { __typename?: 'Mutation', unLike: boolean };
 
+export type CreteRepllyMutationVariables = Exact<{
+  replly: CreateRepllyInput;
+}>;
+
+
+export type CreteRepllyMutation = { __typename?: 'Mutation', createReplly?: { __typename?: 'Thread', _id: string, userId: string, name?: string | null, image?: string | null, content?: string | null } | null };
+
 export type CreateThreadMutationVariables = Exact<{
   thread: CreateThreadInput;
 }>;
@@ -204,7 +226,7 @@ export type GetHomeThreadsQueryVariables = Exact<{
 }>;
 
 
-export type GetHomeThreadsQuery = { __typename?: 'Query', getHomeThreads?: Array<{ __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null }> | null };
+export type GetHomeThreadsQuery = { __typename?: 'Query', getHomeThreads?: Array<{ __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null }> | null };
 
 export type GetUsersQueryVariables = Exact<{
   name: Scalars['String']['input'];
@@ -219,7 +241,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, name: string, image?: string | null, bio?: string | null, email: string, isFollowing: boolean, following?: { __typename?: 'follow', count: number } | null, followers?: { __typename?: 'follow', count: number } | null, thread?: Array<{ __typename?: 'Thread', _id: string, userId: string, media?: Array<string> | null, timeStamp: string, content?: string | null, likes?: number | null, liked?: boolean | null }> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, name: string, image?: string | null, bio?: string | null, email: string, isFollowing: boolean, following?: { __typename?: 'follow', count: number } | null, followers?: { __typename?: 'follow', count: number } | null, thread?: Array<{ __typename?: 'Thread', _id: string, userId: string, media?: Array<string> | null, timeStamp: string, content?: string | null, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null }> | null } | null };
 
 export type RegisterUserMutationVariables = Exact<{
   user: UserInput;
@@ -272,6 +294,17 @@ export const UnlikeDocument = gql`
   unLike(action: $action)
 }
     `;
+export const CreteRepllyDocument = gql`
+    mutation creteReplly($replly: CreateRepllyInput!) {
+  createReplly(replly: $replly) {
+    _id
+    userId
+    name
+    image
+    content
+  }
+}
+    `;
 export const CreateThreadDocument = gql`
     mutation createThread($thread: CreateThreadInput!) {
   createThread(thread: $thread) {
@@ -295,6 +328,16 @@ export const GetHomeThreadsDocument = gql`
     timeStamp
     likes
     liked
+    thread {
+      name
+      email
+      image
+      content
+      media
+      timeStamp
+      likes
+      liked
+    }
   }
 }
     `;
@@ -331,6 +374,16 @@ export const GetUserDocument = gql`
       content
       likes
       liked
+      thread {
+        name
+        email
+        image
+        content
+        media
+        timeStamp
+        likes
+        liked
+      }
     }
   }
 }
@@ -370,6 +423,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     unlike(variables: UnlikeMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UnlikeMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UnlikeMutation>(UnlikeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'unlike', 'mutation');
+    },
+    creteReplly(variables: CreteRepllyMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreteRepllyMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreteRepllyMutation>(CreteRepllyDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'creteReplly', 'mutation');
     },
     createThread(variables: CreateThreadMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateThreadMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateThreadMutation>(CreateThreadDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createThread', 'mutation');

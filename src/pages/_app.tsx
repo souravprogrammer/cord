@@ -41,6 +41,7 @@ export default function App({
         {/* <meta name="theme-color" content="#4285f4" />
         <meta name="msapplication-navbutton-color" content="#4285f4" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#4285f4" /> */}
+        <meta name="view-transition" content="same-origin" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"

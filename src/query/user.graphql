@@ -29,6 +29,16 @@ query getUser($id: ID!, $userId: ID) {
       content
       likes
       liked
+      thread {
+        name
+        email
+        image
+        content
+        media
+        timeStamp
+        likes
+        liked
+      }
 
       # thread
       # replies

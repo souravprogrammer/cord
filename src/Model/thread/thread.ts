@@ -7,8 +7,8 @@ const ThreadSchema = new mongoose.Schema({
     content: {
         type: String,
     },
-    thread: {
-        type: Object
+    threadId: {
+        type: mongoose.Types.ObjectId
     },
     media: {
         type: Array<String>,
@@ -19,9 +19,8 @@ const ThreadSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    replies: {
-        type: RepliesSchema,
-
-    }
+    // replies: {
+    //     type: RepliesSchema,
+    // }
 })
 export const Thread = mongoose.models.thread || mongoose.model('thread', ThreadSchema); 

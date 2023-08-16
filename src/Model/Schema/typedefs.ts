@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-micro"
-import { User, UserInput, Thread, CreateThreadInput, Follow, ActionFollowInput } from "@/Model/Schema/Types"
+import { User, UserInput, Thread, CreateThreadInput, Follow, ActionFollowInput, CreateRepllyInput } from "@/Model/Schema/Types"
 
 export const typeDefs = gql`
     ${Follow}
@@ -23,6 +23,7 @@ export const typeDefs = gql`
     }
     ${CreateThreadInput}
     ${ActionFollowInput}
+    ${CreateRepllyInput}
     ${UserInput}
     # follow : ID! ,followed : ID!
     input LikeInput {
@@ -36,6 +37,6 @@ export const typeDefs = gql`
         unFollow (action : ActionFollowInput!) : Boolean!
         like(action : LikeInput! ) : Boolean!
         unLike(action : LikeInput! ) : Boolean!
-
+        createReplly(replly : CreateRepllyInput!) : Thread
     }
 `
