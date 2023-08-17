@@ -7,8 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { getHomeThreads, getUsers } from "@/utils/QueryClient";
 import Post from "@/components/Post/Post";
 import { Paper } from "@mui/material";
-import CreatePost from "@/components/Post/CreatePost";
-import { Thread, User } from "@/Type";
+import { User } from "@/Type";
 import { useStore } from "@/utils";
 import { StoreState } from "@/utils/Store";
 import { likePost, unlike } from "@/utils/QueryClient";
@@ -18,9 +17,9 @@ type Props = { user: User };
 export default function Index({ user }: Props) {
   const session = useSession();
   const changePage = useStore((state: StoreState) => state.changePage);
-  const { data: therads, isLoading } = useQuery(["home"], () =>
-    getHomeThreads({ userId: user.id })
-  );
+  // const { data: therads, isLoading } = useQuery(["home"], () =>
+  //   getHomeThreads({ userId: user.id })
+  // );
   const queryClient = useQueryClient();
 
   const { mutate: mutateLikePost } = useMutation({
@@ -38,9 +37,6 @@ export default function Index({ user }: Props) {
   useEffect(() => {
     changePage("home");
   }, []);
-  useEffect(() => {
-    console.log("session ", session);
-  }, [session]);
 
   const handlePostLikeDisLike = async (
     action: {

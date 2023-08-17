@@ -14,6 +14,8 @@ import { createThread } from "@/utils/QueryClient";
 import { User } from "@/Type";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { getSession, GetSessionParams, useSession } from "next-auth/react";
+import { useStore } from "@/utils";
+import Post from "@/components/Post/Post";
 
 type Props = {
   user?: User;
@@ -24,6 +26,10 @@ export default function CreatePost({}: Props) {
   const [images, setImages] = useState<Array<File>>([]);
   const [disable, setDisable] = useState(true);
   const InputImagesRef = useRef<React.RefObject<HTMLInputElement> | any>();
+  const sharedThread = useStore((state) => state.thread);
+  const setSharedThread = useStore((state) => state.setThread);
+  const setOpenThreadModal = useStore((state) => state.setOpenThreadModal);
+
   const session = useSession();
   const user: User = session.data?.user as User;
 
@@ -33,19 +39,16 @@ export default function CreatePost({}: Props) {
       setText("");
       setDisable(true);
       setImages([]);
-      console.log("I'm first!");
+      setSharedThread(null);
     },
     onSettled: async () => {
       setText("");
       setDisable(true);
       setImages([]);
-      console.log("I'm second!");
+      setSharedThread(null);
+      setOpenThreadModal(false);
     },
   });
-
-  useEffect(() => {
-    console.log(">>> ", isLoading, disable);
-  }, [isLoading]);
 
   useEffect(() => {
     if (text === "" && images.length === 0) {
@@ -80,6 +83,7 @@ export default function CreatePost({}: Props) {
         userId: user?.id,
         content: text,
         media: result ? [result.secure_url] : [],
+        threadId: sharedThread?._id,
       },
     });
   };
@@ -103,6 +107,7 @@ export default function CreatePost({}: Props) {
         'avatar name name'
         'left space space'
         'actions actions actions'
+        'thread thread thread'
         `,
       }}
     >
@@ -175,6 +180,8 @@ export default function CreatePost({}: Props) {
           gridArea: "space",
           display: "flex",
           justifyContent: "space-between",
+          alignItems: { xs: "center" },
+          px: { sm: "8px", xs: "8px", md: "0px" },
           position: { sm: "fixed", xs: "fixed", md: "inherit" },
           bottom: "0",
           left: 0,
@@ -204,22 +211,24 @@ export default function CreatePost({}: Props) {
           size="small"
           sx={{ borderRadius: "10px", padding: "2px 24px", height: "34px" }}
           onClick={onSubmit}
-          startIcon={
-            <>
-              {isLoading ? (
-                <CircularProgress
-                  sx={{
-                    maxWidth: "24px",
-                    maxHeight: "24px",
-                  }}
-                />
-              ) : null}
-            </>
-          }
         >
-          Post
+          {isLoading ? (
+            <CircularProgress
+              sx={{
+                maxWidth: "24px",
+                maxHeight: "24px",
+              }}
+            />
+          ) : (
+            "Post"
+          )}
         </Button>
       </Paper>
+      {sharedThread ? (
+        <Box sx={{ gridArea: "thread" }}>
+          <Post user={user} reposted={true} thread={sharedThread} />
+        </Box>
+      ) : null}
     </Paper>
   );
 }

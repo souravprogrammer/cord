@@ -33,87 +33,12 @@ const getThreads = async (parent: any, args: any) => {
 
 async function getHomeThreads(parent: any, arg: any) {
     // now here am getting  the threads for the user home 
+    const { userId, page, size }: { userId: string, page: number, size: number } = arg.page;
 
-    // const threads: any = await Follow.aggregate([
-    //     {
-    //         $match: {
-    //             follow: new mongoose.Types.ObjectId(arg.userId)
-    //         }
-    //     },
-    //     {
-    //         $lookup:
-    //         {
-    //             from: "threads",
-    //             localField: "followedUser",
-    //             foreignField: "userId",
-    //             as: "threads"
-    //         }
-    //     },
-    //     {
-    //         $lookup:
-    //         {
-    //             from: "users",
-    //             localField: "followedUser",
-    //             foreignField: "_id",
-    //             as: "user"
-    //         }
-    //     },
-    //     {
-    //         $unwind: "$threads"
-    //     },
-    //     {
-    //         $unwind: "$user"
-    //     },
-    //     {
-    //         $project: {
-    //             _id: "$threads._id",
-    //             userId: "$threads.userId",
-    //             content: "$threads.content",
-    //             likes: "$threads.likes",
-    //             timeStamp: "$threads.timeStamp",
-    //             media: "$threads.media",
-    //             name: "$user.name",
-    //             image: "$user.image",
-    //             email: "$user.email"
-    //         }
-    //     }, {
-    //         $lookup:
-    //         {
-    //             from: "likes",
-    //             let: {
-    //                 userId: "$userId",
-    //                 threadId: "$_id"
-    //             },
-    //             pipeline: [
-    //                 {
-    //                     $match: {
-    //                         $expr: {
-    //                             $and: [
-    //                                 { $eq: ["$userId", new mongoose.Types.ObjectId(arg.userId)] },
-    //                                 { $eq: ["$threadId", "$$threadId"] }
-    //                             ]
-    //                         }
-    //                     }
-    //                 },
-    //             ],
-    //             as: "like"
-    //         }
-    //     },
-    //     {
-    //         $addFields: {
-    //             liked: { $gt: [{ $size: "$like" }, 0] }
-    //         }
-    //     },
-    //     {
-    //         $sort: {
-    //             timestamp: -1 // Sort by timestamp in descending order to get the latest threads first
-    //         }
-    //     },
-    // ]);
     const threads: any = await Follow.aggregate([
         {
             $match: {
-                follow: new mongoose.Types.ObjectId(arg.userId)
+                follow: new mongoose.Types.ObjectId(userId)
             }
         },
         {
@@ -122,7 +47,7 @@ async function getHomeThreads(parent: any, arg: any) {
                 from: "threads",
                 let: {
                     followedUser: "$followedUser",
-                    user: new mongoose.Types.ObjectId(arg.userId)
+                    user: new mongoose.Types.ObjectId(userId)
                 },
                 pipeline: [
                     {
@@ -139,7 +64,6 @@ async function getHomeThreads(parent: any, arg: any) {
                 as: "threads"
             }
         },
-
         {
             $unwind: "$threads"
         },
@@ -168,7 +92,8 @@ async function getHomeThreads(parent: any, arg: any) {
                 image: "$user.image",
                 email: "$user.email"
             }
-        }, {
+        },
+        {
             $lookup:
             {
                 from: "likes",
@@ -220,6 +145,10 @@ async function getHomeThreads(parent: any, arg: any) {
                 // timestamp: 1 // Sort by timestamp in descending order to get the latest threads first
             }
         },
+        {
+            $skip: (page - 1) * size
+        },
+        { $limit: size },
     ]);
     return threads
 
@@ -247,7 +176,7 @@ export const resolver = {
     },
     Mutation: {
         createThread: async (parent: any, { thread }: { thread: Th }) => {
-            console.log("thread ", thread)
+
             try {
                 const newThread = new Thread({
                     ...thread,

@@ -1,6 +1,12 @@
 import React from "react";
 
-import { Paper, Avatar, Box, Typography, ButtonBase } from "@mui/material";
+// import { Paper, Box, Typography, ButtonBase } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import ButtonBase from "@mui/material/ButtonBase";
+
 import Link from "next/dist/client/link";
 import { Activity, ActivityActions, User } from "@/Type";
 

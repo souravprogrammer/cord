@@ -94,11 +94,14 @@ export default function Index({ user, myProfile }: Props) {
     }
   };
 
-  useEffect(() => {
-    console.log("profile Data", data);
-  }, [data]);
   return (
-    <Box>
+    <Box
+      sx={
+        {
+          // paddingBottom: "56px",
+        }
+      }
+    >
       <Paper>
         <Box
           sx={{
@@ -256,7 +259,7 @@ export default function Index({ user, myProfile }: Props) {
             <Post
               onLike={handlePostLikeDisLike}
               key={thread._id}
-              user={data?.user as User}
+              user={{ ...data?.user, id: data.user?._id } as User}
               thread={thread as Thread}
             />
           );

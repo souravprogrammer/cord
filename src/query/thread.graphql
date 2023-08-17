@@ -7,8 +7,8 @@ mutation createThread($thread: CreateThreadInput!) {
   }
 }
 
-query getHomeThreads($userId: String!) {
-  getHomeThreads(userId: $userId) {
+query getHomeThreads($page: ThreadInput!) {
+  getHomeThreads(page: $page) {
     _id
     userId
     name
@@ -20,6 +20,7 @@ query getHomeThreads($userId: String!) {
     likes
     liked
     thread {
+      userId
       name
       email
       image

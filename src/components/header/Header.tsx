@@ -26,6 +26,7 @@ import ShortTextIcon from "@mui/icons-material/ShortText";
 import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import { signOut } from "next-auth/react";
+import { useStore } from "@/utils";
 type Props = {
   sear?: string;
 };
@@ -37,32 +38,6 @@ export default function Header({ sear }: Props) {
 
   const showSearch: boolean = router.pathname.includes("/search");
   const ref = useRef<any>();
-  // const [width, setWidth] = useState(900);
-
-  // const [isPending, transistion] = useTransition();
-
-  // const showSearch: Boolean =
-  //   router.pathname.includes("/search") && width <= 870;
-
-  // const handleWindowResize = useCallback((event: any) => {
-  //   transistion(() => {
-  //     setWidth(window.screen.width);
-  //   });
-  // }, []);
-  // useEffect(() => {
-  //   setWidth(window.screen.width);
-  // }, []);
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     window.addEventListener("resize", handleWindowResize);
-  //   }
-
-  //   return () => {
-  //     if (typeof window !== "undefined") {
-  //       window.removeEventListener("resize", handleWindowResize);
-  //     }
-  //   };
-  // }, [handleWindowResize]);
 
   const handleSearch = () => {
     if (!search) {

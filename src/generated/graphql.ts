@@ -113,7 +113,7 @@ export type QueryActivityArgs = {
 
 
 export type QueryGetHomeThreadsArgs = {
-  userId?: InputMaybe<Scalars['String']['input']>;
+  page: ThreadInput;
 };
 
 
@@ -147,6 +147,12 @@ export type Thread = {
   threadId?: Maybe<Scalars['String']['output']>;
   timeStamp: Scalars['String']['output'];
   userId: Scalars['String']['output'];
+};
+
+export type ThreadInput = {
+  page: Scalars['Int']['input'];
+  size: Scalars['Int']['input'];
+  userId: Scalars['String']['input'];
 };
 
 export type User = {
@@ -222,11 +228,11 @@ export type CreateThreadMutationVariables = Exact<{
 export type CreateThreadMutation = { __typename?: 'Mutation', createThread?: { __typename?: 'Thread', _id: string, userId: string, content?: string | null, media?: Array<string> | null } | null };
 
 export type GetHomeThreadsQueryVariables = Exact<{
-  userId: Scalars['String']['input'];
+  page: ThreadInput;
 }>;
 
 
-export type GetHomeThreadsQuery = { __typename?: 'Query', getHomeThreads?: Array<{ __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null }> | null };
+export type GetHomeThreadsQuery = { __typename?: 'Query', getHomeThreads?: Array<{ __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null }> | null };
 
 export type GetUsersQueryVariables = Exact<{
   name: Scalars['String']['input'];
@@ -316,8 +322,8 @@ export const CreateThreadDocument = gql`
 }
     `;
 export const GetHomeThreadsDocument = gql`
-    query getHomeThreads($userId: String!) {
-  getHomeThreads(userId: $userId) {
+    query getHomeThreads($page: ThreadInput!) {
+  getHomeThreads(page: $page) {
     _id
     userId
     name
@@ -329,6 +335,7 @@ export const GetHomeThreadsDocument = gql`
     likes
     liked
     thread {
+      userId
       name
       email
       image

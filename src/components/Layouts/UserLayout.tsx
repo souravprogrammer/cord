@@ -9,22 +9,30 @@ import React, {
 import Header from "../header/Header";
 import NavigationBar from "../nav/NavigationBar";
 import StickyWrapper from "../utils/StickyWrapper";
+import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useRouter } from "next/router";
-
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import CreatePost from "../Post/CreatePost";
+import { useStore } from "@/utils";
+// import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+// import CreatePost from "@/components/Post/CreatePost";
+// import Fab from "@mui/material/Fab";
+// import AddIcon from "@mui/icons-material/Add";
+const AddIcon = dynamic(() => import("@mui/icons-material/Add"));
+const Fab = dynamic(() => import("@mui/material/Fab"));
+const SwipeableDrawer = dynamic(() => import("@mui/material/SwipeableDrawer"));
+const CreatePost = dynamic(() => import("@/components/Post/CreatePost"));
 
 export default function UserLayout(Page: ReactNode, pageProps: any) {
   const router = useRouter();
   const [width, setWidth] = useState(900);
   const [isPending, transistion] = useTransition();
   const ref = useRef<any>();
-  const [open, setOpen] = useState(false);
+  const open = useStore((state) => state.openThreadModal);
+  const setOpen = useStore((state) => state.setOpenThreadModal);
+  const setThread = useStore((state) => state.setThread);
   const home =
     router.pathname.includes("/home") ||
     router.pathname.includes("/activity") ||
@@ -84,6 +92,7 @@ export default function UserLayout(Page: ReactNode, pageProps: any) {
         open={open}
         onClose={() => {
           setOpen(false);
+          setThread(null);
         }}
         onOpen={() => {
           setOpen(true);
@@ -99,9 +108,7 @@ export default function UserLayout(Page: ReactNode, pageProps: any) {
             height: "95dvh",
           }}
         >
-          <CreatePost
-            user={{ id: "asdf", name: "sdaf", email: "asedfgd", image: "" }}
-          />
+          <CreatePost />
         </Box>
       </SwipeableDrawer>
 
@@ -114,6 +121,7 @@ export default function UserLayout(Page: ReactNode, pageProps: any) {
             gap: "8px",
             paddingTop: "24px",
             minHeight: "calc(100dvh - 55px)",
+            paddingBottom: "60px",
           }}
         >
           <Box

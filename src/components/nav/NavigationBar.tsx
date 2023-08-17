@@ -86,7 +86,7 @@ const SideList = () => {
     } else if (router.pathname.includes("/search")) {
       changePage("search");
     }
-  }, []);
+  }, [router.pathname, changePage]);
 
   useEffect(() => {
     if (activePage === "home") {

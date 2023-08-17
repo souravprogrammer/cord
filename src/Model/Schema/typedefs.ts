@@ -13,12 +13,16 @@ export const typeDefs = gql`
         thread : Thread
         threadId : String!
     }
-   
+    input ThreadInput {
+        userId : String!
+        page : Int!
+        size : Int!
+    }
    type Query {
     user (id : ID! ,userId : ID) : User
     users (name : String) : [User!]
     getThreads ( userId : String) : [Thread!]
-    getHomeThreads ( userId : String) : [Thread!]
+    getHomeThreads ( page : ThreadInput! ) : [Thread!]
     activity(userId : ID!) : [Activity!]
     }
     ${CreateThreadInput}

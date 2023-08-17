@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 
-import UserLayout from "@/components/Layouts/UserLayout";
 import ProfileSide from "@/components/nav/ProfileSide";
 import StickyWrapper from "@/components/utils/StickyWrapper";
 import Paper from "@mui/material/Paper";
@@ -11,6 +10,10 @@ import { useRouter } from "next/dist/client/router";
 import { getUsers } from "@/utils/QueryClient";
 import { useQuery } from "react-query";
 import Box from "@mui/material/Box";
+// import dynamic from "next/dynamic";
+
+import UserLayout from "@/components/Layouts/UserLayout";
+// const UserLayout = dynamic(() => import("@/components/Layouts/UserLayout"));
 type Props = {
   result: any;
 };

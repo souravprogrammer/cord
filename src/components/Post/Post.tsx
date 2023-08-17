@@ -27,7 +27,7 @@ type Props = {
   thread: Thread;
   reposted?: boolean;
   onLike?: (action: LikeAction, liked: boolean) => Promise<any>;
-  onReshare?: (threadId: string) => void;
+  onReshare?: (thread: Thread) => void;
 };
 
 /**
@@ -46,18 +46,31 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           borderRadius: "6px",
           display: "grid",
           gridTemplateColumns: {
-            sm: "28px 1fr 32px",
-            xs: "38px 1fr 32px",
+            sm: reposted ? "28px 1fr" : "28px 1fr 32px",
+            xs: reposted ? "28px 1fr" : "38px 1fr 32px",
             md: "48px 1fr 32px",
           },
 
           gap: { xs: "4px", sm: "8px", md: "12px" },
           maxWidth: "100%",
-          gridTemplateAreas: `
+          gridTemplateAreas: {
+            xs: reposted
+              ? `
+            'avatar name'
+            'content content'
+            'actions actions'
+            `
+              : `
+            'avatar name options'
+            'space content content'
+            'actions actions actions'
+            `,
+            md: `
         'avatar name options'
         'space content content'
         'actions actions actions'
         `,
+          },
         }}
       >
         <Avatar
@@ -103,7 +116,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           }}
         >
           <Link
-            href={"/profile/" + user?.id}
+            href={"/profile/" + (user as any)?.id}
             style={{ textDecoration: "none", color: "#000" }}
           >
             <Typography
@@ -153,7 +166,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           </Box>
         </Box>
         <Box sx={{ gridArea: "content" }}>
-          <Typography>{thread?.content}</Typography>
+          <Typography variant="body2">{thread?.content}</Typography>
           <Box>
             {thread?.media?.map((img: string, index) => {
               return (
@@ -186,7 +199,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
               }}
             >
               <Post
-                user={thread.thread as any}
+                user={{ ...thread.thread, id: thread.thread.userId } as any}
                 thread={thread.thread}
                 reposted={true}
               />
@@ -225,7 +238,8 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           <Button
             color={"followingButton" as "primary"}
             onClick={() => {
-              if (props.onReshare) props.onReshare(thread._id);
+              if (props.onReshare)
+                props.onReshare({ ...thread, thread: undefined });
             }}
             startIcon={<AutorenewIcon sx={{ height: "20px" }} />}
           ></Button>
@@ -244,7 +258,13 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
       </Box>
       <Box sx={{ transform: "scale(0.933)" }}>
         {thread.replies?.map((replly: any, index: any) => {
-          return <Replly user={replly as User} thread={replly as Thread} />;
+          return (
+            <Replly
+              key={index}
+              user={replly as User}
+              thread={replly as Thread}
+            />
+          );
         })}
       </Box>
     </Paper>
