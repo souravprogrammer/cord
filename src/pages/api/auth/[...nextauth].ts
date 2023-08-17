@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import Providers from "next-auth/providers"
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 // import MongoDBClient from "@/Utils/MongoDBClient";
 import clientPromise from "@/lib/Client"
