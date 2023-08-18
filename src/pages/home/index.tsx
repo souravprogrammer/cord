@@ -53,7 +53,7 @@ export default function Index({ user }: Props) {
   );
   const fetchOnScroll = useCallback(() => {
     fetchNextPage();
-  }, [fetchNextPage]);
+  }, []);
 
   const { mutate: mutateLikePost } = useMutation({
     mutationFn: likePost,
