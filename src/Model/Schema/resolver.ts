@@ -106,7 +106,7 @@ async function getHomeThreads(parent: any, arg: any) {
                         $match: {
                             $expr: {
                                 $and: [
-                                    { $eq: ["$userId", new mongoose.Types.ObjectId(arg.userId)] },
+                                    { $eq: ["$userId", new mongoose.Types.ObjectId(userId)] },
                                     { $eq: ["$threadId", "$$threadId"] }
                                 ]
                             }

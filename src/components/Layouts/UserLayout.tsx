@@ -122,15 +122,19 @@ export default function UserLayout(Page: ReactNode, pageProps: any) {
             paddingTop: "24px",
             minHeight: "calc(100dvh - 55px)",
             paddingBottom: "60px",
+            // placeItems: "start",
+            // border: "1px solid green",
           }}
         >
           <Box
             sx={{
+              display: home ? "" : "none",
               position: {
                 xs: "fixed",
                 sm: "fixed",
                 md: "relative",
               },
+
               zIndex: 100,
             }}
           >

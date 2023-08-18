@@ -1,22 +1,35 @@
 import { GetSessionParams, getSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UserLayout from "@/components/Layouts/UserLayout";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { Divider, Tab, Tabs, Paper } from "@mui/material";
-import Post from "@/components/Post/Post";
+import Divider from "@mui/material/Divider";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Paper from "@mui/material/Paper";
+
 import { Thread, User } from "@/Type";
+import dynimic from "next/dynamic";
+
 import {
   getUser,
   followUser,
   unfollowUser,
   queryClient,
 } from "@/utils/QueryClient";
+
 import { dehydrate, useMutation, useQuery, useQueryClient } from "react-query";
 import { NextRouter, useRouter } from "next/dist/client/router";
 import { likePost, unlike } from "@/utils/QueryClient";
+import { useStore } from "@/utils";
+
+// import ShareDrawer from "@/components/card/ShareDrawer";
+// import Post from "@/components/Post/Post";
+
+const ShareDrawer = dynimic(() => import("@/components/card/ShareDrawer"));
+const Post = dynimic(() => import("@/components/Post/Post"));
 
 interface userProfileType extends User {
   following: { count: number };
@@ -32,6 +45,8 @@ export default function Index({ user, myProfile }: Props) {
   const [tab, setTab] = useState<number>(0);
   const router: NextRouter = useRouter();
   const queryclient = useQueryClient();
+  const [openShare, setOpenShare] = useState(false);
+  const setThread = useStore((state) => state.setThread);
 
   const { data, isLoading, isFetching } = useQuery<any>(
     ["profile", router.query.profile?.[0]],
@@ -95,18 +110,12 @@ export default function Index({ user, myProfile }: Props) {
   };
 
   return (
-    <Box
-      sx={
-        {
-          // paddingBottom: "56px",
-        }
-      }
-    >
-      <Paper>
+    <Box>
+      <Paper sx={{ display: { xs: "none", sm: "none", md: "block" } }}>
         <Box
           sx={{
-            padding: 2,
             display: "grid",
+            padding: 2,
             gridTemplateColumns: { sm: "1fr", md: "1fr 2fr" },
           }}
         >
@@ -247,6 +256,152 @@ export default function Index({ user, myProfile }: Props) {
         </Tabs>
       </Paper>
 
+      <Paper
+        sx={{
+          display: {
+            xs: "block",
+            md: "none",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            padding: 2,
+            display: "grid",
+            gridTemplateColumns: "1fr fr 1fr 1fr",
+            columnGap: 2,
+            rowGap: 1,
+            gridTemplateAreas: `
+            'name name name avatar'
+            'follow follow follow avatar'
+            'bio bio bio bio'
+            'button1 button1 button2 button2'
+            `,
+
+            // border: "1px solid red",
+          }}
+        >
+          <Box
+            sx={{
+              gridArea: "name",
+              // border: "1px solid red",
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                gridArea: "name",
+                fontWeight: "bold",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {data?.user?.name}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                gridArea: "name",
+                alignSelf: "center",
+                fontSize: "13px",
+              }}
+              fontWeight={"bold"}
+            >
+              {data?.user?.email}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              gridArea: "follow",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              // border: "1px solid red",
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                alignSelf: "center",
+                fontSize: "13px",
+                // textAlign: "center",
+              }}
+              fontWeight={"bold"}
+            >
+              {data?.user?.followers?.count}
+              <span style={{ fontWeight: "bold" }}>{" follow"}</span>
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                alignSelf: "center",
+                fontSize: "13px",
+              }}
+              fontWeight={"bold"}
+            >
+              {data?.user?.following?.count}
+              <span style={{ fontWeight: "bold" }}>{" following"}</span>
+            </Typography>
+          </Box>
+
+          <Typography
+            sx={{
+              gridArea: "bio",
+              fontSize: "13px",
+
+              pt: 1,
+            }}
+          >
+            {data?.user?.bio}
+            {"world is crule but also a very beautiful"}
+          </Typography>
+
+          <Avatar
+            sizes="large"
+            sx={{
+              gridArea: "avatar",
+              height: { xs: "85px", sm: "112px", md: "112px" },
+              width: { xs: "85px", sm: "112px", md: "112px" },
+
+              alignSelf: "center",
+              justifySelf: "center",
+            }}
+            src={data?.user?.image as string}
+          >
+            <Typography variant="h2">
+              {data?.user?.name
+                .split(" ")
+                .map((word: string) => word.charAt(0).toUpperCase())
+                .join("")}
+            </Typography>
+          </Avatar>
+
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{ gridArea: "button1", placeItems: "center", display: "grid" }}
+          >
+            Edit Profile
+          </Button>
+
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => {
+              navigator.share({
+                title: user.name,
+                url: window.location.href,
+              });
+            }}
+            sx={{
+              gridArea: "button2",
+              placeItems: "center",
+              display: "grid",
+            }}
+          >
+            share profile
+          </Button>
+        </Box>
+      </Paper>
+
       <Box
         sx={{
           display: "grid",
@@ -261,10 +416,22 @@ export default function Index({ user, myProfile }: Props) {
               key={thread._id}
               user={{ ...data?.user, id: data.user?._id } as User}
               thread={thread as Thread}
+              onReshare={(thread: Thread) => {
+                setThread(thread);
+                setOpenShare(true);
+              }}
             />
           );
         })}
       </Box>
+      <ShareDrawer
+        open={openShare}
+        onClose={() => {
+          setOpenShare(false);
+        }}
+        user={user}
+        onClickClose={() => setOpenShare(false)}
+      />
     </Box>
   );
 }

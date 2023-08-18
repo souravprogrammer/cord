@@ -33,6 +33,7 @@ export default function User({}: Props) {
         display: "grid",
         gridTemplateColumns: { sm: "1fr", xs: "1fr", md: "3fr 1fr" },
         gap: "8px",
+        // border: "1px solid red",
       }}
     >
       <div

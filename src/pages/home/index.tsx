@@ -16,6 +16,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { likePost, unlike, getHomeThreads } from "@/utils/QueryClient";
 import UserLayout from "@/components/Layouts/UserLayout";
+import ShareDrawer from "@/components/card/ShareDrawer";
 
 type Props = { user: User };
 
@@ -29,9 +30,10 @@ const InfiniteScroller = dynamic(
 const Post = dynamic(() => import("@/components/Post/Post"));
 
 export default function Index({ user }: Props) {
-  // const session = useSession();
   const changePage = useStore((state: StoreState) => state.changePage);
-  const selectedThreadId = useRef<Thread | null>(null);
+  const [openShare, setOpenShare] = useState<boolean>(false);
+  const setThread = useStore((state) => state.setThread);
+  const queryClient = useQueryClient();
 
   const {
     data: therads,
@@ -52,11 +54,6 @@ export default function Index({ user }: Props) {
   const fetchOnScroll = useCallback(() => {
     fetchNextPage();
   }, [fetchNextPage]);
-  const [openShare, setOpenShare] = useState<boolean>(false);
-  const setThread = useStore((state) => state.setThread);
-  const setOpenThreadModal = useStore((state) => state.setOpenThreadModal);
-
-  const queryClient = useQueryClient();
 
   const { mutate: mutateLikePost } = useMutation({
     mutationFn: likePost,
@@ -70,15 +67,6 @@ export default function Index({ user }: Props) {
       queryClient.invalidateQueries(["home"]);
     },
   });
-  const { mutate: repostThread, isLoading: isRepoasting } = useMutation({
-    mutationFn: createThread,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["home"]);
-    },
-  });
-  useEffect(() => {
-    changePage("home");
-  }, [changePage]);
 
   const handlePostLikeDisLike = async (
     action: {
@@ -91,12 +79,6 @@ export default function Index({ user }: Props) {
     } else {
       mutateLikePost({ action: { ...action.action, userId: user.id } });
     }
-  };
-
-  const handleRePostThread = async () => {
-    repostThread({
-      thread: { userId: user.id, threadId: selectedThreadId.current?._id },
-    });
   };
 
   return (
@@ -140,7 +122,6 @@ export default function Index({ user }: Props) {
                   thread={thread as Thread}
                   onLike={handlePostLikeDisLike}
                   onReshare={(thread: Thread) => {
-                    selectedThreadId.current = thread;
                     setThread(thread);
                     setOpenShare(true);
                   }}
@@ -174,54 +155,14 @@ export default function Index({ user }: Props) {
             </Paper>
           </StickyWrapper>
         </Box>
-        <Drawer
-          anchor="bottom"
+        <ShareDrawer
           open={openShare}
           onClose={() => {
-            selectedThreadId.current = null;
-            // setThread(null);
             setOpenShare(false);
           }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              flexDirection: "column",
-              padding: "16px 8px",
-            }}
-          >
-            <Box onClick={handleRePostThread}>
-              <MyButton
-                label="Repost"
-                isLoading={isRepoasting}
-                Icon={
-                  <>
-                    <AutorenewIcon sx={{ width: "20px", height: "20px" }} />
-                  </>
-                }
-              />
-            </Box>
-            <Box
-              onClick={() => {
-                setOpenThreadModal(true);
-                setOpenShare(false);
-              }}
-            >
-              <MyButton
-                disabled
-                label="Quote"
-                Icon={
-                  <>
-                    <TextsmsOutlinedIcon
-                      sx={{ width: "20px", height: "20px" }}
-                    />
-                  </>
-                }
-              />
-            </Box>
-          </Box>
-        </Drawer>
+          onClickClose={() => setOpenShare(false)}
+          user={user}
+        />
       </Box>
     </InfiniteScroller>
   );

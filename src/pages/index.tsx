@@ -4,12 +4,7 @@ import ButtonGoogle from "@/styles/Button.module.css";
 import { Inter } from "next/font/google";
 import Button from "@mui/material/Button";
 import { Typography, Box, Modal, SwipeableDrawer } from "@mui/material";
-import {
-  useSession,
-  signIn,
-  getSession,
-  GetSessionParams,
-} from "next-auth/react";
+import { signIn, getSession, GetSessionParams } from "next-auth/react";
 import RegisterUser from "@/components/card/RegisterUser";
 import { useRef, useState } from "react";
 
@@ -80,7 +75,6 @@ export default function Home() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                // border: "1px solid red",
               }}
             >
               <button className={ButtonGoogle.googleBtn}>
@@ -90,7 +84,7 @@ export default function Home() {
                 className={ButtonGoogle.gitHubbtn}
                 style={{ marginTop: "24px" }}
                 onClick={() => {
-                  signIn();
+                  signIn("github");
                 }}
               >
                 Sign in with GitHub
@@ -102,7 +96,6 @@ export default function Home() {
                 variant="contained"
                 sx={{ borderRadius: "20px", width: "100%" }}
                 onClick={() => {
-                  // signIn();
                   setOpenModal(true);
                 }}
               >

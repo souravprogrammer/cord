@@ -154,7 +154,6 @@ const SideList = () => {
           },
           position: "fixed",
           bottom: 0,
-          // border: "5px solid red",
           left: 0,
           width: "100dvw",
           zIndex: 100,
@@ -172,11 +171,6 @@ const SideList = () => {
             return (
               <BottomNavigationAction
                 onClick={() => {
-                  changePage(item.page as any);
-
-                  // if (item.path.includes("*")) {
-                  //   return;
-                  // }
                   if (item.path.includes("profile")) {
                     router.push(
                       item.path + "/" + (session.data?.user as User).id
@@ -184,6 +178,7 @@ const SideList = () => {
                   } else {
                     router.push(item.path);
                   }
+                  changePage(item.page as any);
                 }}
                 key={index}
                 label={item.title}
