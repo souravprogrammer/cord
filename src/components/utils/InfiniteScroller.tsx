@@ -7,7 +7,7 @@ type Props = {
   next?: (() => Promise<void>) | (() => void);
 } & PropsWithChildren;
 
-export default function InfiniteScroller({ children, next }: Props) {
+function InfiniteScroller({ children, next }: Props) {
   const handleRef = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
@@ -26,3 +26,5 @@ export default function InfiniteScroller({ children, next }: Props) {
 
   return <Box>{children}</Box>;
 }
+
+export default React.memo(InfiniteScroller);

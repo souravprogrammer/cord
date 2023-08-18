@@ -25,7 +25,7 @@ const Fab = dynamic(() => import("@mui/material/Fab"));
 const SwipeableDrawer = dynamic(() => import("@mui/material/SwipeableDrawer"));
 const CreatePost = dynamic(() => import("@/components/Post/CreatePost"));
 
-export default function UserLayout(Page: ReactNode, pageProps: any) {
+function UserLayout(Page: ReactNode, pageProps: any) {
   const router = useRouter();
   const [width, setWidth] = useState(900);
   const [isPending, transistion] = useTransition();
@@ -155,3 +155,5 @@ export default function UserLayout(Page: ReactNode, pageProps: any) {
     </>
   );
 }
+
+export default React.memo(UserLayout);

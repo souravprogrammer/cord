@@ -29,7 +29,9 @@ const InfiniteScroller = dynamic(
 );
 const Post = dynamic(() => import("@/components/Post/Post"));
 
-export default function Index({ user }: Props) {
+// api is calling infinite times here
+
+function Index({ user }: Props) {
   const changePage = useStore((state: StoreState) => state.changePage);
   const [openShare, setOpenShare] = useState<boolean>(false);
   const setThread = useStore((state) => state.setThread);
@@ -53,6 +55,7 @@ export default function Index({ user }: Props) {
   );
   const fetchOnScroll = useCallback(() => {
     fetchNextPage();
+    console.log("onScroll Fetch");
   }, []);
 
   const { mutate: mutateLikePost } = useMutation({
@@ -168,6 +171,8 @@ export default function Index({ user }: Props) {
   );
 }
 Index.getLayout = UserLayout;
+
+export default React.memo(Index);
 
 export async function getServerSideProps(context: GetSessionParams) {
   const session = await getSession(context);
