@@ -60,6 +60,7 @@ export type Mutation = {
   registerUser?: Maybe<User>;
   unFollow: Scalars['Boolean']['output'];
   unLike: Scalars['Boolean']['output'];
+  updateProfile: Scalars['Boolean']['output'];
 };
 
 
@@ -95,6 +96,11 @@ export type MutationUnFollowArgs = {
 
 export type MutationUnLikeArgs = {
   action: LikeInput;
+};
+
+
+export type MutationUpdateProfileArgs = {
+  update: UserProfileInput;
 };
 
 export type Query = {
@@ -186,6 +192,13 @@ export type UserInput = {
   password: Scalars['String']['input'];
 };
 
+export type UserProfileInput = {
+  _id: Scalars['String']['input'];
+  bio?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Follow = {
   __typename?: 'follow';
   count: Scalars['Int']['output'];
@@ -269,6 +282,13 @@ export type UnfollowUserMutationVariables = Exact<{
 
 
 export type UnfollowUserMutation = { __typename?: 'Mutation', unFollow: boolean };
+
+export type UpdateProfileMutationVariables = Exact<{
+  update: UserProfileInput;
+}>;
+
+
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile: boolean };
 
 
 export const GetActivitiesDocument = gql`
@@ -414,6 +434,11 @@ export const UnfollowUserDocument = gql`
   unFollow(action: $action)
 }
     `;
+export const UpdateProfileDocument = gql`
+    mutation updateProfile($update: UserProfileInput!) {
+  updateProfile(update: $update)
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -454,6 +479,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     unfollowUser(variables: UnfollowUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UnfollowUserMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UnfollowUserMutation>(UnfollowUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'unfollowUser', 'mutation');
+    },
+    updateProfile(variables: UpdateProfileMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateProfileMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateProfileMutation>(UpdateProfileDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateProfile', 'mutation');
     }
   };
 }

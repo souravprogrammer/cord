@@ -61,3 +61,7 @@ mutation followUser($action: ActionFollowInput!) {
 mutation unfollowUser($action: ActionFollowInput!) {
   unFollow(action: $action)
 }
+
+mutation updateProfile($update: UserProfileInput!) {
+  updateProfile(update: $update)
+}

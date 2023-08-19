@@ -6,11 +6,9 @@ import { useMutation, useQueryClient, useInfiniteQuery } from "react-query";
 import { Thread, User } from "@/Type";
 import { useStore } from "@/utils";
 import { StoreState } from "@/utils/Store";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
-import { createThread } from "@/utils/QueryClient";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+
 import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
 
@@ -46,17 +44,16 @@ function Index({ user }: Props) {
   } = useInfiniteQuery(
     ["home"],
     ({ pageParam = 1 }) =>
-      getHomeThreads({ page: { userId: user.id, page: pageParam, size: 10 } }),
+      getHomeThreads({ page: { userId: user.id, page: pageParam, size: 50 } }),
     {
-      getNextPageParam: (_lastpage, pages) => {
-        return pages.length + 1;
+      getNextPageParam: (_lastpage: any, pages) => {
+        console.log("page", _lastpage, pages);
+        return _lastpage?.getHomeThreads?.length < 50 ? null : pages.length + 1;
       },
+      staleTime: 60000,
+      cacheTime: 50000,
     }
   );
-  const fetchOnScroll = useCallback(() => {
-    fetchNextPage();
-    console.log("onScroll Fetch");
-  }, []);
 
   const { mutate: mutateLikePost } = useMutation({
     mutationFn: likePost,
@@ -86,64 +83,25 @@ function Index({ user }: Props) {
 
   return (
     <UserLayout>
-      <InfiniteScroller next={fetchOnScroll}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "3fr 1fr" },
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "3fr 1fr" },
+          gap: "8px",
+          height: "100%",
+        }}
+      >
+        <div
+          style={{
+            borderLeft: "1px solid rgba(0,0,0,0.1)",
+            borderRight: "1px solid rgba(0,0,0,0.1)",
+            padding: "4px 8px",
+            display: "flex",
+            flexDirection: "column",
             gap: "8px",
             height: "100%",
           }}
         >
-          <div
-            style={{
-              borderLeft: "1px solid rgba(0,0,0,0.1)",
-              borderRight: "1px solid rgba(0,0,0,0.1)",
-              padding: "4px 8px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-              height: "100%",
-            }}
-          >
-            <Box
-              sx={{
-                display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "block",
-                },
-              }}
-            >
-              <CreatePost user={user} />
-            </Box>
-            {therads?.pages.map((group, index) => {
-              return group.getHomeThreads?.map((thread: any, index) => {
-                return (
-                  <Post
-                    key={index}
-                    user={{ ...thread, id: thread.userId } as User}
-                    thread={thread as Thread}
-                    onLike={handlePostLikeDisLike}
-                    onReshare={(thread: Thread) => {
-                      setThread(thread);
-                      setOpenShare(true);
-                    }}
-                  />
-                );
-              });
-            })}
-            {isLoading || isFetchingNextPage ? (
-              <>
-                <Skeleton
-                  variant="rectangular"
-                  width={"100%"}
-                  height={318}
-                ></Skeleton>
-                <Skeleton variant="rectangular" width={"100%"} height={318} />
-              </>
-            ) : null}
-          </div>
           <Box
             sx={{
               display: {
@@ -153,22 +111,91 @@ function Index({ user }: Props) {
               },
             }}
           >
-            <StickyWrapper sx={{ height: "300px" }}>
-              <Paper>
-                <ProfileSide user={user} />
-              </Paper>
-            </StickyWrapper>
+            <CreatePost user={user} />
           </Box>
-          <ShareDrawer
-            open={openShare}
-            onClose={() => {
-              setOpenShare(false);
-            }}
-            onClickClose={() => setOpenShare(false)}
-            user={user}
-          />
+          {therads?.pages.map((group, index) => {
+            return group.getHomeThreads?.map((thread: any, index: number) => {
+              return (
+                <Post
+                  key={index}
+                  user={{ ...thread, id: thread.userId } as User}
+                  thread={thread as Thread}
+                  onLike={handlePostLikeDisLike}
+                  onReshare={(thread: Thread) => {
+                    setThread(thread);
+                    setOpenShare(true);
+                  }}
+                />
+              );
+            });
+          })}
+          {isLoading ? (
+            <>
+              <Skeleton
+                variant="rectangular"
+                width={"100%"}
+                height={180}
+              ></Skeleton>
+              <Skeleton variant="rectangular" width={"100%"} height={318} />
+              <Skeleton variant="rectangular" width={"100%"} height={318} />
+              <Skeleton variant="rectangular" width={"100%"} height={318} />
+              <Skeleton variant="rectangular" width={"100%"} height={318} />
+              <Skeleton variant="rectangular" width={"100%"} height={318} />
+            </>
+          ) : null}
+
+          {!isLoading && isFetchingNextPage ? (
+            <>
+              <Skeleton
+                variant="rectangular"
+                width={"100%"}
+                height={180}
+              ></Skeleton>
+              <Skeleton variant="rectangular" width={"100%"} height={318} />
+            </>
+          ) : null}
+          {!isLoading ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="outlined"
+                sx={{
+                  borderRadius: "20px",
+                }}
+                onClick={() => {
+                  if (hasNextPage) {
+                    fetchNextPage();
+                  }
+                }}
+              >
+                Load More
+              </Button>
+            </Box>
+          ) : null}
+        </div>
+        <Box
+          sx={{
+            display: {
+              xs: "none",
+              sm: "none",
+              md: "block",
+            },
+          }}
+        >
+          <StickyWrapper sx={{ height: "300px" }}>
+            <Paper>
+              <ProfileSide user={user} />
+            </Paper>
+          </StickyWrapper>
         </Box>
-      </InfiniteScroller>
+        <ShareDrawer
+          open={openShare}
+          onClose={() => {
+            setOpenShare(false);
+          }}
+          onClickClose={() => setOpenShare(false)}
+          user={user}
+        />
+      </Box>
     </UserLayout>
   );
 }

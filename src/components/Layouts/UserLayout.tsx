@@ -17,10 +17,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useStore } from "@/utils";
-// import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-// import CreatePost from "@/components/Post/CreatePost";
-// import Fab from "@mui/material/Fab";
-// import AddIcon from "@mui/icons-material/Add";
+
 const AddIcon = dynamic(() => import("@mui/icons-material/Add"));
 const Fab = dynamic(() => import("@mui/material/Fab"));
 const SwipeableDrawer = dynamic(() => import("@mui/material/SwipeableDrawer"));
@@ -97,7 +94,7 @@ export default function UserLayout({ children }: PropsWithChildren) {
           setThread(null);
         }}
         onOpen={() => {
-          setOpen(true);
+          // setOpen(true);
         }}
         swipeAreaWidth={0}
         disableSwipeToOpen={false}
@@ -124,8 +121,6 @@ export default function UserLayout({ children }: PropsWithChildren) {
             paddingTop: "24px",
             minHeight: "calc(100dvh - 55px)",
             paddingBottom: "60px",
-            // placeItems: "start",
-            // border: "1px solid green",
           }}
         >
           <Box

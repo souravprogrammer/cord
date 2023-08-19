@@ -31,7 +31,7 @@ type Props = {
   sear?: string;
 };
 
-export default function Header({ sear }: Props) {
+function Header({ sear }: Props) {
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -326,6 +326,8 @@ export default function Header({ sear }: Props) {
     </Paper>
   );
 }
+
+export default React.memo(Header);
 export async function getServerSideProps(context: any) {
   const userName = context.params.user[0];
   return {

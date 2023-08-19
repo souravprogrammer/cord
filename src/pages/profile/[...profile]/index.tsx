@@ -1,5 +1,5 @@
 import { GetSessionParams, getSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import UserLayout from "@/components/Layouts/UserLayout";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -25,8 +25,11 @@ import { NextRouter, useRouter } from "next/dist/client/router";
 import { likePost, unlike } from "@/utils/QueryClient";
 import { useStore } from "@/utils";
 
-// import ShareDrawer from "@/components/card/ShareDrawer";
-// import Post from "@/components/Post/Post";
+import MySwipeableDrawer from "@/components/utils/MySwipeableDrawer";
+
+const EditProfileDrawer = dynimic(
+  () => import("@/components/card/EditProfileDrawer")
+);
 
 const ShareDrawer = dynimic(() => import("@/components/card/ShareDrawer"));
 const Post = dynimic(() => import("@/components/Post/Post"));
@@ -108,6 +111,8 @@ export default function Index({ user, myProfile }: Props) {
       mutateLikePost({ action: { ...action.action, userId: user.id } });
     }
   };
+
+  const drawerRef = useRef<any>();
 
   return (
     <UserLayout>
@@ -280,14 +285,11 @@ export default function Index({ user, myProfile }: Props) {
             'bio bio bio bio'
             'button1 button1 button2 button2'
             `,
-
-              // border: "1px solid red",
             }}
           >
             <Box
               sx={{
                 gridArea: "name",
-                // border: "1px solid red",
               }}
             >
               <Typography
@@ -317,7 +319,6 @@ export default function Index({ user, myProfile }: Props) {
                 gridArea: "follow",
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                // border: "1px solid red",
               }}
             >
               <Typography
@@ -377,17 +378,37 @@ export default function Index({ user, myProfile }: Props) {
               </Typography>
             </Avatar>
 
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{
-                gridArea: "button1",
-                placeItems: "center",
-                display: "grid",
-              }}
-            >
-              Edit Profile
-            </Button>
+            {myProfile ? (
+              <Button
+                onClick={() => {
+                  drawerRef.current.setOpen(true);
+                }}
+                variant="outlined"
+                size="small"
+                sx={{
+                  gridArea: "button1",
+                  placeItems: "center",
+                  display: "grid",
+                }}
+              >
+                Edit Profile
+              </Button>
+            ) : null}
+
+            {myProfile ? null : (
+              <Button
+                variant={data.user.isFollowing ? "outlined" : "contained"}
+                size="small"
+                sx={{
+                  gridArea: "button1",
+                  // height: "26px",
+                  alignSelf: "center",
+                }}
+                onClick={onFollowhandler}
+              >
+                {data.user.isFollowing ? "following" : "follow"}
+              </Button>
+            )}
 
             <Button
               variant="outlined"
@@ -440,6 +461,17 @@ export default function Index({ user, myProfile }: Props) {
           onClickClose={() => setOpenShare(false)}
         />
       </Box>
+      <MySwipeableDrawer ref={drawerRef}>
+        <EditProfileDrawer
+          initialProps={{
+            _id: data?.user._id,
+            name: data?.user.name,
+            email: data?.user.email,
+            image: data?.user.image,
+            bio: data?.user.bio,
+          }}
+        />
+      </MySwipeableDrawer>
     </UserLayout>
   );
 }

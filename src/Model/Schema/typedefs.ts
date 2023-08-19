@@ -34,6 +34,13 @@ export const typeDefs = gql`
         threadId : String!
         userId : String!
     }
+    input UserProfileInput {
+        _id : String!
+        name : String 
+        bio : String
+        image : String
+        email : String
+    }
     type Mutation  {
         createThread (thread : CreateThreadInput!) : Thread
         registerUser (user : UserInput!) : User
@@ -42,5 +49,6 @@ export const typeDefs = gql`
         like(action : LikeInput! ) : Boolean!
         unLike(action : LikeInput! ) : Boolean!
         createReplly(replly : CreateRepllyInput!) : Thread
+        updateProfile(update : UserProfileInput! ) : Boolean!
     }
 `

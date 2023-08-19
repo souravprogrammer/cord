@@ -5,7 +5,7 @@ interface props extends PropsWithChildren {
   sx?: any;
 }
 
-export default function StickyWrapper({ children, sx }: props) {
+function StickyWrapper({ children, sx }: props) {
   return (
     <Box
       sx={{
@@ -18,3 +18,5 @@ export default function StickyWrapper({ children, sx }: props) {
     </Box>
   );
 }
+
+export default React.memo(StickyWrapper);

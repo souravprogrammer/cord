@@ -13,7 +13,7 @@ import { useMutation } from "react-query";
 import { createThread } from "@/utils/QueryClient";
 import { User } from "@/Type";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { getSession, GetSessionParams, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useStore } from "@/utils";
 import Post from "@/components/Post/Post";
 

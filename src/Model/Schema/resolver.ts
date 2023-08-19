@@ -274,6 +274,25 @@ export const resolver = {
             } catch (err) {
                 return err
             }
+        },
+        updateProfile: async (parent: unknown, { update }: { update: { name?: string, bio?: string, image?: string, _id: string } }) => {
+
+            const fields: any = { ...update };
+            delete fields._id
+            try {
+                await User.updateOne({
+                    _id: new mongoose.Types.ObjectId(update._id)
+                }, {
+                    $set: {
+                        ...fields
+                    }
+                })
+                return true;
+            } catch (err: any) {
+
+                return false;
+            }
+
         }
     },
     User: {
