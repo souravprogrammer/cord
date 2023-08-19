@@ -7,10 +7,10 @@ type Props = {};
 
 export default function Index({}: Props) {
   return (
-    <Box>
-      <Typography>Search User</Typography>
-    </Box>
+    <UserLayout>
+      <Box>
+        <Typography>Search User</Typography>
+      </Box>
+    </UserLayout>
   );
 }
-
-Index.getLayout = UserLayout;

@@ -17,7 +17,7 @@ import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
 import { User } from "@/Type";
 
-export default function NavigationBar({ pageProps }: { pageProps: any }) {
+export default function NavigationBar({ pageProps }: { pageProps?: any }) {
   return (
     <div
       style={{

@@ -30,26 +30,27 @@ export default function Index({ user }: Props) {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gap: "8px",
-      }}
-    >
-      {data?.activity?.map((activity: any, index: number) => {
-        return (
-          <NotifiactionCard
-            key={index}
-            user={activity.from as User}
-            activity={activity as Activity}
-          />
-        );
-      })}
-    </div>
+    <UserLayout>
+      <div
+        style={{
+          display: "grid",
+          gap: "8px",
+        }}
+      >
+        {data?.activity?.map((activity: any, index: number) => {
+          return (
+            <NotifiactionCard
+              key={index}
+              user={activity.from as User}
+              activity={activity as Activity}
+            />
+          );
+        })}
+      </div>
+    </UserLayout>
   );
 }
 
-Index.getLayout = UserLayout;
 export async function getServerSideProps(context: GetSessionParams) {
   const session = await getSession(context);
 

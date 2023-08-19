@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useTransition,
   useRef,
+  PropsWithChildren,
 } from "react";
 import Header from "../header/Header";
 import NavigationBar from "../nav/NavigationBar";
@@ -25,7 +26,8 @@ const Fab = dynamic(() => import("@mui/material/Fab"));
 const SwipeableDrawer = dynamic(() => import("@mui/material/SwipeableDrawer"));
 const CreatePost = dynamic(() => import("@/components/Post/CreatePost"));
 
-export default function UserLayout(Page: ReactNode, pageProps: any) {
+// Page: ReactNode, pageProps: any
+export default function UserLayout({ children }: PropsWithChildren) {
   const router = useRouter();
   const [width, setWidth] = useState(900);
   const [isPending, transistion] = useTransition();
@@ -145,11 +147,11 @@ export default function UserLayout(Page: ReactNode, pageProps: any) {
               }}
             >
               <Paper>
-                <NavigationBar pageProps={pageProps} />
+                <NavigationBar />
               </Paper>
             </StickyWrapper>
           </Box>
-          <div>{Page}</div>
+          <div>{children}</div>
         </Box>
       </Container>
     </>

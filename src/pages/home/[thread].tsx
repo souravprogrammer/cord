@@ -52,55 +52,55 @@ export default function Index({ user }: Props) {
   };
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "3fr 1fr" },
-        gap: "8px",
-        height: "100%",
-      }}
-    >
-      <div
-        style={{
-          borderLeft: "1px solid rgba(0,0,0,0.1)",
-          borderRight: "1px solid rgba(0,0,0,0.1)",
-          padding: "4px 8px",
-          display: "flex",
-          flexDirection: "column",
+    <UserLayout>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "3fr 1fr" },
           gap: "8px",
           height: "100%",
         }}
       >
-        <Post
-          user={{
-            name: "sourav sharma",
-            image: "",
-            id: "",
-            email: "asd",
+        <div
+          style={{
+            borderLeft: "1px solid rgba(0,0,0,0.1)",
+            borderRight: "1px solid rgba(0,0,0,0.1)",
+            padding: "4px 8px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+            height: "100%",
           }}
-          thread={{ content: "hello world" } as any}
-        />
-      </div>
-      <Box
-        sx={{
-          display: {
-            xs: "none",
-            sm: "none",
-            md: "block",
-          },
-        }}
-      >
-        <StickyWrapper sx={{ height: "300px" }}>
-          <Paper>
-            <ProfileSide user={user} />
-          </Paper>
-        </StickyWrapper>
+        >
+          <Post
+            user={{
+              name: "sourav sharma",
+              image: "",
+              id: "",
+              email: "asd",
+            }}
+            thread={{ content: "hello world" } as any}
+          />
+        </div>
+        <Box
+          sx={{
+            display: {
+              xs: "none",
+              sm: "none",
+              md: "block",
+            },
+          }}
+        >
+          <StickyWrapper sx={{ height: "300px" }}>
+            <Paper>
+              <ProfileSide user={user} />
+            </Paper>
+          </StickyWrapper>
+        </Box>
       </Box>
-    </Box>
+    </UserLayout>
   );
 }
-Index.getLayout = UserLayout;
-
 export async function getServerSideProps(context: GetSessionParams) {
   const session = await getSession(context);
   if (session === null) {

@@ -28,46 +28,46 @@ export default function User({}: Props) {
   );
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: { sm: "1fr", xs: "1fr", md: "3fr 1fr" },
-        gap: "8px",
-        // border: "1px solid red",
-      }}
-    >
-      <div
-        style={{
-          // border: "1px solid red",
-          gap: "8px",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {data?.users?.length === 0 ? "no result found" : null}
-        {data?.users?.map((user: any, index) => {
-          return <UserSearch key={user._id} user={user} />;
-        })}
-      </div>
-      <StickyWrapper
+    <UserLayout>
+      <Box
         sx={{
-          display: {
-            md: "block",
-            sm: "none",
-            xs: "none",
-          },
-          height: "300px",
+          display: "grid",
+          gridTemplateColumns: { sm: "1fr", xs: "1fr", md: "3fr 1fr" },
+          gap: "8px",
+          // border: "1px solid red",
         }}
       >
-        <Paper>
-          <ProfileSide user={session.data?.user ?? ({} as any)} />
-        </Paper>
-      </StickyWrapper>
-    </Box>
+        <div
+          style={{
+            // border: "1px solid red",
+            gap: "8px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {data?.users?.length === 0 ? "no result found" : null}
+          {data?.users?.map((user: any, index) => {
+            return <UserSearch key={user._id} user={user} />;
+          })}
+        </div>
+        <StickyWrapper
+          sx={{
+            display: {
+              md: "block",
+              sm: "none",
+              xs: "none",
+            },
+            height: "300px",
+          }}
+        >
+          <Paper>
+            <ProfileSide user={session.data?.user ?? ({} as any)} />
+          </Paper>
+        </StickyWrapper>
+      </Box>
+    </UserLayout>
   );
 }
-
-User.getLayout = UserLayout;
 
 // export async function getServerSideProps(context: any) {
 //   const userName = context.params.user[0];

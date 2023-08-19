@@ -22,7 +22,7 @@ function InfiniteScroller({ children, next }: Props) {
     return () => {
       window.removeEventListener("scroll", handleRef);
     };
-  }, [handleRef]);
+  }, []);
 
   return <Box>{children}</Box>;
 }

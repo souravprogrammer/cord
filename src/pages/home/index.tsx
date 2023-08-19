@@ -85,26 +85,65 @@ function Index({ user }: Props) {
   };
 
   return (
-    <InfiniteScroller next={fetchOnScroll}>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "3fr 1fr" },
-          gap: "8px",
-          height: "100%",
-        }}
-      >
-        <div
-          style={{
-            borderLeft: "1px solid rgba(0,0,0,0.1)",
-            borderRight: "1px solid rgba(0,0,0,0.1)",
-            padding: "4px 8px",
-            display: "flex",
-            flexDirection: "column",
+    <UserLayout>
+      <InfiniteScroller next={fetchOnScroll}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "3fr 1fr" },
             gap: "8px",
             height: "100%",
           }}
         >
+          <div
+            style={{
+              borderLeft: "1px solid rgba(0,0,0,0.1)",
+              borderRight: "1px solid rgba(0,0,0,0.1)",
+              padding: "4px 8px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              height: "100%",
+            }}
+          >
+            <Box
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "none",
+                  md: "block",
+                },
+              }}
+            >
+              <CreatePost user={user} />
+            </Box>
+            {therads?.pages.map((group, index) => {
+              return group.getHomeThreads?.map((thread: any, index) => {
+                return (
+                  <Post
+                    key={index}
+                    user={{ ...thread, id: thread.userId } as User}
+                    thread={thread as Thread}
+                    onLike={handlePostLikeDisLike}
+                    onReshare={(thread: Thread) => {
+                      setThread(thread);
+                      setOpenShare(true);
+                    }}
+                  />
+                );
+              });
+            })}
+            {isLoading || isFetchingNextPage ? (
+              <>
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={318}
+                ></Skeleton>
+                <Skeleton variant="rectangular" width={"100%"} height={318} />
+              </>
+            ) : null}
+          </div>
           <Box
             sx={{
               display: {
@@ -114,64 +153,25 @@ function Index({ user }: Props) {
               },
             }}
           >
-            <CreatePost user={user} />
+            <StickyWrapper sx={{ height: "300px" }}>
+              <Paper>
+                <ProfileSide user={user} />
+              </Paper>
+            </StickyWrapper>
           </Box>
-          {therads?.pages.map((group, index) => {
-            return group.getHomeThreads?.map((thread: any, index) => {
-              return (
-                <Post
-                  key={index}
-                  user={{ ...thread, id: thread.userId } as User}
-                  thread={thread as Thread}
-                  onLike={handlePostLikeDisLike}
-                  onReshare={(thread: Thread) => {
-                    setThread(thread);
-                    setOpenShare(true);
-                  }}
-                />
-              );
-            });
-          })}
-          {isLoading || isFetchingNextPage ? (
-            <>
-              <Skeleton
-                variant="rectangular"
-                width={"100%"}
-                height={318}
-              ></Skeleton>
-              <Skeleton variant="rectangular" width={"100%"} height={318} />
-            </>
-          ) : null}
-        </div>
-        <Box
-          sx={{
-            display: {
-              xs: "none",
-              sm: "none",
-              md: "block",
-            },
-          }}
-        >
-          <StickyWrapper sx={{ height: "300px" }}>
-            <Paper>
-              <ProfileSide user={user} />
-            </Paper>
-          </StickyWrapper>
+          <ShareDrawer
+            open={openShare}
+            onClose={() => {
+              setOpenShare(false);
+            }}
+            onClickClose={() => setOpenShare(false)}
+            user={user}
+          />
         </Box>
-        <ShareDrawer
-          open={openShare}
-          onClose={() => {
-            setOpenShare(false);
-          }}
-          onClickClose={() => setOpenShare(false)}
-          user={user}
-        />
-      </Box>
-    </InfiniteScroller>
+      </InfiniteScroller>
+    </UserLayout>
   );
 }
-Index.getLayout = UserLayout;
-
 export default React.memo(Index);
 
 export async function getServerSideProps(context: GetSessionParams) {

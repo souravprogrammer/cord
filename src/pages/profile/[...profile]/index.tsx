@@ -110,329 +110,337 @@ export default function Index({ user, myProfile }: Props) {
   };
 
   return (
-    <Box>
-      <Paper sx={{ display: { xs: "none", sm: "none", md: "block" } }}>
-        <Box
-          sx={{
-            display: "grid",
-            padding: 2,
-            gridTemplateColumns: { sm: "1fr", md: "1fr 2fr" },
-          }}
-        >
-          <Avatar
-            sizes="large"
-            sx={{
-              height: { xs: "85px", sm: "112px", md: "152px" },
-              width: { xs: "85px", sm: "112px", md: "152px" },
-
-              alignSelf: "center",
-              justifySelf: "center",
-            }}
-            src={data?.user?.image as string}
-          >
-            <Typography variant="h2">
-              {data?.user?.name
-                .split(" ")
-                .map((word: string) => word.charAt(0).toUpperCase())
-                .join("")}
-            </Typography>
-          </Avatar>
+    <UserLayout>
+      <Box>
+        <Paper sx={{ display: { xs: "none", sm: "none", md: "block" } }}>
           <Box
             sx={{
               display: "grid",
-              padding: { xs: "8px", sm: "8px", md: "16px" },
-              rowGap: "8px",
-              columnGap: "12px",
-              gridTemplateColumns: {
-                xs: "1fr 1fr 1fr 1fr",
-                sm: "1fr 1fr 1fr 1fr",
-                md: "1fr 1fr 1fr 1fr",
-              },
-              gridTemplateAreas: {
-                xs: `
+              padding: 2,
+              gridTemplateColumns: { sm: "1fr", md: "1fr 2fr" },
+            }}
+          >
+            <Avatar
+              sizes="large"
+              sx={{
+                height: { xs: "85px", sm: "112px", md: "152px" },
+                width: { xs: "85px", sm: "112px", md: "152px" },
+
+                alignSelf: "center",
+                justifySelf: "center",
+              }}
+              src={data?.user?.image as string}
+            >
+              <Typography variant="h2">
+                {data?.user?.name
+                  .split(" ")
+                  .map((word: string) => word.charAt(0).toUpperCase())
+                  .join("")}
+              </Typography>
+            </Avatar>
+            <Box
+              sx={{
+                display: "grid",
+                padding: { xs: "8px", sm: "8px", md: "16px" },
+                rowGap: "8px",
+                columnGap: "12px",
+                gridTemplateColumns: {
+                  xs: "1fr 1fr 1fr 1fr",
+                  sm: "1fr 1fr 1fr 1fr",
+                  md: "1fr 1fr 1fr 1fr",
+                },
+                gridTemplateAreas: {
+                  xs: `
                'un un followbtn followbtn'
                'th follow following el2' 
                'name name actions el3'
                'bio bio bio bio'
                 `,
-                sm: `
+                  sm: `
                 'un un un followbtn'
                 'th follow following el2' 
                 'name name actions el3'
                 'bio bio bio bio'
                 `,
-                md: `
+                  md: `
           'un un followbtn el'
           'th follow following el2' 
           'name actions actions el3'
           'bio bio bio bio'
           `,
-              },
-            }}
-          >
-            <Typography
-              sx={{
-                gridArea: { md: "un", sm: "un", xs: "un" },
-                alignSelf: "center",
-              }}
-              fontWeight={"bold"}
-            >
-              {data?.user?.email}
-            </Typography>
-            <Typography
-              sx={{
-                gridArea: "th",
-                whiteSpace: "nowrap",
+                },
               }}
             >
-              <span style={{ fontWeight: "bold" }}>
-                {data?.user?.thread?.length}
-              </span>{" "}
-              Threads
-            </Typography>
-            <Typography
-              sx={{
-                gridArea: "follow",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {" "}
-              <span style={{ fontWeight: "bold" }}>
-                {data?.user?.followers?.count}
-              </span>{" "}
-              followers
-            </Typography>
-            <Typography
-              sx={{
-                gridArea: "following",
-                whiteSpace: "nowrap",
-              }}
-            >
-              <span style={{ fontWeight: "bold" }}>
-                {data?.user?.following?.count}
-              </span>{" "}
-              following
-            </Typography>
-            <Typography
-              sx={{
-                gridArea: { md: "name", sm: "name", xs: "name" },
-                fontWeight: "bold",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {data?.user?.name}
-            </Typography>
-            <Typography sx={{ gridArea: { md: "bio", sm: "bio", xs: "bio" } }}>
-              {data?.user?.bio}
-              This world is curl but its also a very beautiful creator of
-              dogesan & Arrayanime
-            </Typography>
-            {myProfile ? null : (
-              <Button
-                variant={data.user.isFollowing ? "outlined" : "contained"}
-                size="small"
+              <Typography
                 sx={{
-                  gridArea: {
-                    md: "followbtn",
-                    xs: "followbtn",
-                    sm: "followbtn",
-                  },
-                  height: "26px",
+                  gridArea: { md: "un", sm: "un", xs: "un" },
                   alignSelf: "center",
                 }}
-                onClick={onFollowhandler}
+                fontWeight={"bold"}
               >
-                {data.user.isFollowing ? "following" : "follow"}
-              </Button>
-            )}
+                {data?.user?.email}
+              </Typography>
+              <Typography
+                sx={{
+                  gridArea: "th",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <span style={{ fontWeight: "bold" }}>
+                  {data?.user?.thread?.length}
+                </span>{" "}
+                Threads
+              </Typography>
+              <Typography
+                sx={{
+                  gridArea: "follow",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {" "}
+                <span style={{ fontWeight: "bold" }}>
+                  {data?.user?.followers?.count}
+                </span>{" "}
+                followers
+              </Typography>
+              <Typography
+                sx={{
+                  gridArea: "following",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <span style={{ fontWeight: "bold" }}>
+                  {data?.user?.following?.count}
+                </span>{" "}
+                following
+              </Typography>
+              <Typography
+                sx={{
+                  gridArea: { md: "name", sm: "name", xs: "name" },
+                  fontWeight: "bold",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {data?.user?.name}
+              </Typography>
+              <Typography
+                sx={{ gridArea: { md: "bio", sm: "bio", xs: "bio" } }}
+              >
+                {data?.user?.bio}
+                This world is curl but its also a very beautiful creator of
+                dogesan & Arrayanime
+              </Typography>
+              {myProfile ? null : (
+                <Button
+                  variant={data.user.isFollowing ? "outlined" : "contained"}
+                  size="small"
+                  sx={{
+                    gridArea: {
+                      md: "followbtn",
+                      xs: "followbtn",
+                      sm: "followbtn",
+                    },
+                    height: "26px",
+                    alignSelf: "center",
+                  }}
+                  onClick={onFollowhandler}
+                >
+                  {data.user.isFollowing ? "following" : "follow"}
+                </Button>
+              )}
+            </Box>
           </Box>
-        </Box>
-        <Box sx={{ pt: 4 }}>
-          <Divider />
-        </Box>
-        <Tabs value={tab} onChange={(e, value: number) => setTab(value)}>
-          <Tab label="thread" />
-          <Tab label="replies" />
-        </Tabs>
-      </Paper>
+          <Box sx={{ pt: 4 }}>
+            <Divider />
+          </Box>
+          <Tabs value={tab} onChange={(e, value: number) => setTab(value)}>
+            <Tab label="thread" />
+            <Tab label="replies" />
+          </Tabs>
+        </Paper>
 
-      <Paper
-        sx={{
-          display: {
-            xs: "block",
-            md: "none",
-          },
-        }}
-      >
-        <Box
+        <Paper
           sx={{
-            padding: 2,
-            display: "grid",
-            gridTemplateColumns: "1fr fr 1fr 1fr",
-            columnGap: 2,
-            rowGap: 1,
-            gridTemplateAreas: `
+            display: {
+              xs: "block",
+              md: "none",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              padding: 2,
+              display: "grid",
+              gridTemplateColumns: "1fr fr 1fr 1fr",
+              columnGap: 2,
+              rowGap: 1,
+              gridTemplateAreas: `
             'name name name avatar'
             'follow follow follow avatar'
             'bio bio bio bio'
             'button1 button1 button2 button2'
             `,
 
-            // border: "1px solid red",
+              // border: "1px solid red",
+            }}
+          >
+            <Box
+              sx={{
+                gridArea: "name",
+                // border: "1px solid red",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  gridArea: "name",
+                  fontWeight: "bold",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {data?.user?.name}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  gridArea: "name",
+                  alignSelf: "center",
+                  fontSize: "13px",
+                }}
+                fontWeight={"bold"}
+              >
+                {data?.user?.email}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                gridArea: "follow",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                // border: "1px solid red",
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  alignSelf: "center",
+                  fontSize: "13px",
+                  // textAlign: "center",
+                }}
+                fontWeight={"bold"}
+              >
+                {data?.user?.followers?.count}
+                <span style={{ fontWeight: "bold" }}>{" follow"}</span>
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  alignSelf: "center",
+                  fontSize: "13px",
+                }}
+                fontWeight={"bold"}
+              >
+                {data?.user?.following?.count}
+                <span style={{ fontWeight: "bold" }}>{" following"}</span>
+              </Typography>
+            </Box>
+
+            <Typography
+              sx={{
+                gridArea: "bio",
+                fontSize: "13px",
+
+                pt: 1,
+              }}
+            >
+              {data?.user?.bio}
+              {"world is crule but also a very beautiful"}
+            </Typography>
+
+            <Avatar
+              sizes="large"
+              sx={{
+                gridArea: "avatar",
+                height: { xs: "85px", sm: "112px", md: "112px" },
+                width: { xs: "85px", sm: "112px", md: "112px" },
+
+                alignSelf: "center",
+                justifySelf: "center",
+              }}
+              src={data?.user?.image as string}
+            >
+              <Typography variant="h2">
+                {data?.user?.name
+                  .split(" ")
+                  .map((word: string) => word.charAt(0).toUpperCase())
+                  .join("")}
+              </Typography>
+            </Avatar>
+
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{
+                gridArea: "button1",
+                placeItems: "center",
+                display: "grid",
+              }}
+            >
+              Edit Profile
+            </Button>
+
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => {
+                navigator.share({
+                  title: user.name,
+                  url: window.location.href,
+                });
+              }}
+              sx={{
+                gridArea: "button2",
+                placeItems: "center",
+                display: "grid",
+              }}
+            >
+              share profile
+            </Button>
+          </Box>
+        </Paper>
+
+        <Box
+          sx={{
+            display: "grid",
+            gap: "16px",
+            pt: "8px",
           }}
         >
-          <Box
-            sx={{
-              gridArea: "name",
-              // border: "1px solid red",
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{
-                gridArea: "name",
-                fontWeight: "bold",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {data?.user?.name}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                gridArea: "name",
-                alignSelf: "center",
-                fontSize: "13px",
-              }}
-              fontWeight={"bold"}
-            >
-              {data?.user?.email}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              gridArea: "follow",
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              // border: "1px solid red",
-            }}
-          >
-            <Typography
-              variant="body2"
-              sx={{
-                alignSelf: "center",
-                fontSize: "13px",
-                // textAlign: "center",
-              }}
-              fontWeight={"bold"}
-            >
-              {data?.user?.followers?.count}
-              <span style={{ fontWeight: "bold" }}>{" follow"}</span>
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                alignSelf: "center",
-                fontSize: "13px",
-              }}
-              fontWeight={"bold"}
-            >
-              {data?.user?.following?.count}
-              <span style={{ fontWeight: "bold" }}>{" following"}</span>
-            </Typography>
-          </Box>
-
-          <Typography
-            sx={{
-              gridArea: "bio",
-              fontSize: "13px",
-
-              pt: 1,
-            }}
-          >
-            {data?.user?.bio}
-            {"world is crule but also a very beautiful"}
-          </Typography>
-
-          <Avatar
-            sizes="large"
-            sx={{
-              gridArea: "avatar",
-              height: { xs: "85px", sm: "112px", md: "112px" },
-              width: { xs: "85px", sm: "112px", md: "112px" },
-
-              alignSelf: "center",
-              justifySelf: "center",
-            }}
-            src={data?.user?.image as string}
-          >
-            <Typography variant="h2">
-              {data?.user?.name
-                .split(" ")
-                .map((word: string) => word.charAt(0).toUpperCase())
-                .join("")}
-            </Typography>
-          </Avatar>
-
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{ gridArea: "button1", placeItems: "center", display: "grid" }}
-          >
-            Edit Profile
-          </Button>
-
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              navigator.share({
-                title: user.name,
-                url: window.location.href,
-              });
-            }}
-            sx={{
-              gridArea: "button2",
-              placeItems: "center",
-              display: "grid",
-            }}
-          >
-            share profile
-          </Button>
+          {data?.user?.thread.map((thread: any) => {
+            return (
+              <Post
+                onLike={handlePostLikeDisLike}
+                key={thread._id}
+                user={{ ...data?.user, id: data.user?._id } as User}
+                thread={thread as Thread}
+                onReshare={(thread: Thread) => {
+                  setThread(thread);
+                  setOpenShare(true);
+                }}
+              />
+            );
+          })}
         </Box>
-      </Paper>
-
-      <Box
-        sx={{
-          display: "grid",
-          gap: "16px",
-          pt: "8px",
-        }}
-      >
-        {data?.user?.thread.map((thread: any) => {
-          return (
-            <Post
-              onLike={handlePostLikeDisLike}
-              key={thread._id}
-              user={{ ...data?.user, id: data.user?._id } as User}
-              thread={thread as Thread}
-              onReshare={(thread: Thread) => {
-                setThread(thread);
-                setOpenShare(true);
-              }}
-            />
-          );
-        })}
+        <ShareDrawer
+          open={openShare}
+          onClose={() => {
+            setOpenShare(false);
+          }}
+          user={user}
+          onClickClose={() => setOpenShare(false)}
+        />
       </Box>
-      <ShareDrawer
-        open={openShare}
-        onClose={() => {
-          setOpenShare(false);
-        }}
-        user={user}
-        onClickClose={() => setOpenShare(false)}
-      />
-    </Box>
+    </UserLayout>
   );
 }
 
@@ -458,4 +466,3 @@ export async function getServerSideProps(context: any) {
     },
   };
 }
-Index.getLayout = UserLayout;

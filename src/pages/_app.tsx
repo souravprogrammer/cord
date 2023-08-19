@@ -58,11 +58,12 @@ export default function App({
                   backgroundColor: "rgb(243, 242, 239)",
                 }}
               >
-                {Component.getLayout ? (
+                {/* {Component.getLayout ? (
                   Component.getLayout(<Component {...pageProps} />)
                 ) : (
                   <Component {...pageProps} />
-                )}
+                )} */}
+                <Component {...pageProps} />
               </div>
             </ThemeProvider>
           </Hydrate>
