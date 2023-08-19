@@ -22,7 +22,10 @@ const getDesignTheme = (mode: string) => ({
                 },
                 followingButton: {
                     main: "rgba(0,0,0,0.5)"
-                }
+                },
+                primary: {
+                    main: "#000",
+                },
                 // primary: {
                 //     main: "#ff7043",
                 // },
@@ -107,6 +110,9 @@ const getDesignTheme = (mode: string) => ({
                     main: "#74788d",
                     dark: "#636678",
                     contrastText: "#fff",
+                },
+                followingButton: {
+                    main: "rgba(0,0,0,0.5)"
                 },
                 background: {
                     default: "#f8f8fb",

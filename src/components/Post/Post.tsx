@@ -176,10 +176,10 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
                     display: "grid",
                     gridTemplateColumns: "1fr",
                     position: "relative",
-                    // border: "1px solid red",
                   }}
                 >
                   <img
+                    loading="lazy"
                     key={index}
                     style={{
                       maxWidth: "100%",

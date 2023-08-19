@@ -326,7 +326,6 @@ export default function Index({ user, myProfile }: Props) {
                 sx={{
                   alignSelf: "center",
                   fontSize: "13px",
-                  // textAlign: "center",
                 }}
                 fontWeight={"bold"}
               >
@@ -479,6 +478,15 @@ export default function Index({ user, myProfile }: Props) {
 export async function getServerSideProps(context: any) {
   const userId = context.params.profile[0];
   const session: any = await getSession(context as GetSessionParams);
+
+  if (!session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
   await queryClient.prefetchQuery(["profile", userId], () =>
     getUser({ id: userId, userId: session?.user?.id })
   );

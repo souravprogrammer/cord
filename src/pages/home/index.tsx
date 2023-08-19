@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 
 import { GetSessionParams, getSession } from "next-auth/react";
@@ -21,10 +21,7 @@ type Props = { user: User };
 const ProfileSide = dynamic(() => import("@/components/nav/ProfileSide"));
 const StickyWrapper = dynamic(() => import("@/components/utils/StickyWrapper"));
 const CreatePost = dynamic(() => import("@/components/Post/CreatePost"));
-const MyButton = dynamic(() => import("@/components/utils/MyButton"));
-const InfiniteScroller = dynamic(
-  () => import("@/components/utils/InfiniteScroller")
-);
+
 const Post = dynamic(() => import("@/components/Post/Post"));
 
 // api is calling infinite times here

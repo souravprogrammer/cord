@@ -7,7 +7,6 @@ import { Typography, Box, Modal, SwipeableDrawer } from "@mui/material";
 import { signIn, getSession, GetSessionParams } from "next-auth/react";
 import RegisterUser from "@/components/card/RegisterUser";
 import { useRef, useState } from "react";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -53,21 +52,22 @@ export default function Home() {
               justifyContent: "center",
             }}
           >
-            <div
+            <Image
+              src="/icon.png"
+              loading="lazy"
+              width={48}
+              height={48}
+              alt="logo"
               style={{
-                backgroundColor: "blue",
-                borderRadius: "50%",
-                width: "48px",
-                aspectRatio: "1 / 1",
                 marginTop: "48px",
-                marginBottom: "48px",
+                borderRadius: "50%",
               }}
-            ></div>
+            />
             <Typography variant="h2" fontWeight={"bold"} py={3}>
               Happening now
             </Typography>
             <Typography variant="h4" fontWeight={"bold"} py={3}>
-              Join [Twitter] today.
+              Join [Cord] today.
             </Typography>
             <Box
               sx={{

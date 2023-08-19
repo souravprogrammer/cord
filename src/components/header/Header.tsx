@@ -27,6 +27,7 @@ import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOu
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import { signOut } from "next-auth/react";
 import { useStore } from "@/utils";
+import Image from "next/image";
 type Props = {
   sear?: string;
 };
@@ -86,8 +87,15 @@ function Header({ sear }: Props) {
             placeItems: "center",
           }}
         >
-          <Link href="/home">
-            <FlutterDashIcon color="primary" fontSize="large" />
+          <Link
+            href="/home"
+            style={{
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <Image src="/icon.png" alt="logo" width={32} height={32} />
+            {/* <FlutterDashIcon color="primary" fontSize="large" /> */}
           </Link>
           <Paper
             elevation={0}

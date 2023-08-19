@@ -10,6 +10,7 @@ import { useRouter } from "next/dist/client/router";
 import { getUsers } from "@/utils/QueryClient";
 import { useQuery } from "react-query";
 import Box from "@mui/material/Box";
+import { getSession } from "next-auth/react";
 // import dynamic from "next/dynamic";
 
 import UserLayout from "@/components/Layouts/UserLayout";
@@ -69,9 +70,20 @@ export default function User({}: Props) {
   );
 }
 
-// export async function getServerSideProps(context: any) {
-//   const userName = context.params.user[0];
-//   return {
-//     props: {},
-//   };
-// }
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
+  return {
+    props: {
+      user: session.user,
+    },
+  };
+}
