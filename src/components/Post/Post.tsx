@@ -42,7 +42,8 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
       <Box
         sx={{
           padding: reposted ? "6px" : "16px",
-          border: reposted ? "1px solid rgba(0,0,0,0.2)" : "",
+          border: reposted ? "1px solid" : "",
+          borderColor: "border.main",
           borderRadius: "6px",
           display: "grid",
           gridTemplateColumns: {
@@ -117,12 +118,16 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
         >
           <Link
             href={"/profile/" + (user as any)?.id}
-            style={{ textDecoration: "none", color: "#000" }}
+            style={{ textDecoration: "none" }}
           >
             <Typography
               fontWeight={"bold"}
               variant="body2"
-              sx={{ paddingRight: "4px", whiteSpace: "nowrap" }}
+              sx={{
+                paddingRight: "4px",
+                whiteSpace: "nowrap",
+                color: "text.head",
+              }}
             >
               {user?.name}
             </Typography>
@@ -256,7 +261,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           ></Button>
         </Box>
       </Box>
-      <Box sx={{ transform: "scale(0.933)" }}>
+      <Box sx={{ transform: "scale(0.923)" }}>
         {thread.replies?.map((replly: any, index: any) => {
           return (
             <Replly

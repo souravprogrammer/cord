@@ -2,7 +2,14 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextPage } from "next";
-import { ComponentType, ReactElement, ReactNode, useMemo } from "react";
+import {
+  ComponentType,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { queryClient } from "@/utils/QueryClient";
 import { QueryClientProvider } from "react-query";
 import { SessionProvider } from "next-auth/react";
@@ -11,10 +18,12 @@ import {
   CssBaseline,
   responsiveFontSizes,
   ThemeProvider,
+  Box,
 } from "@mui/material";
 
 import getDesignTheme from "@/components/theme/getDesignTheme";
 import { ThemeOptions } from "@mui/material/styles";
+import { useStore } from "@/utils";
 
 type Page<P = {}> = NextPage<P> & {
   // You can disable whichever you don't need
@@ -30,18 +39,19 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: Props) {
+  const mode = useStore((store) => store.themeMode);
   const theme = useMemo(
     () =>
-      responsiveFontSizes(createTheme(getDesignTheme("light") as ThemeOptions)),
-    []
+      responsiveFontSizes(createTheme(getDesignTheme(mode) as ThemeOptions)),
+    [mode]
   );
   return (
     <>
       <Head>
-        <meta name="application-name" content="PWA App" />
-        <meta name="theme-color" content="#999999" />
+        <meta name="application-name" content="Cord" />
+        <meta name="theme-color" content="#fff" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#fff" />
-        <meta name="msapplication-navbutton-color" content="#000" />
+        <meta name="msapplication-navbutton-color" content="#fff" />
 
         {/* <meta name="theme-color" content="#4285f4" />
         <meta name="msapplication-navbutton-color" content="#4285f4" />
@@ -56,14 +66,14 @@ export default function App({
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <div
-              style={{
+            <Box
+              sx={{
                 maxWidth: "100vw",
-                backgroundColor: "rgb(243, 242, 239)",
+                backgroundColor: "background.default",
               }}
             >
               <Component {...pageProps} />
-            </div>
+            </Box>
           </ThemeProvider>
         </QueryClientProvider>
       </SessionProvider>

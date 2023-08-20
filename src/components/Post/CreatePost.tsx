@@ -100,6 +100,8 @@ export default function CreatePost({}: Props) {
     <Paper
       sx={{
         padding: "16px",
+        backgroundColor: "background.paper",
+
         display: "grid",
         gridTemplateColumns: "48px 1fr 32px",
         gap: "12px",

@@ -7,6 +7,7 @@ import { GetSessionParams, getSession } from "next-auth/react";
 import { Activity, User } from "@/Type";
 import { useStore } from "@/utils";
 import { StoreState } from "@/utils/Store";
+import { CircularProgress } from "@mui/material";
 
 // import NotifiactionCard from "@/components/card/NotificationCard";
 
@@ -21,7 +22,7 @@ type Props = {
 
 export default function Index({ user }: Props) {
   const changePage = useStore((state: StoreState) => state.changePage);
-  const { data, isLoading } = useQuery(["activity"], () =>
+  const { data, isLoading, isFetching } = useQuery(["activity"], () =>
     getActivities({ userId: user.id })
   );
 
@@ -37,15 +38,28 @@ export default function Index({ user }: Props) {
           gap: "8px",
         }}
       >
-        {data?.activity?.map((activity: any, index: number) => {
-          return (
-            <NotifiactionCard
-              key={index}
-              user={activity.from as User}
-              activity={activity as Activity}
-            />
-          );
-        })}
+        {(isLoading || isFetching) && (
+          <>
+            <div
+              style={{
+                display: "grid",
+                placeItems: "center",
+              }}
+            >
+              <CircularProgress />
+            </div>
+          </>
+        )}
+        {(!isLoading || !isFetching) &&
+          data?.activity?.map((activity: any, index: number) => {
+            return (
+              <NotifiactionCard
+                key={index}
+                user={activity.from as User}
+                activity={activity as Activity}
+              />
+            );
+          })}
       </div>
     </UserLayout>
   );

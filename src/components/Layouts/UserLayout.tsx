@@ -109,6 +109,8 @@ export default function UserLayout({ children, showNav = true }: Props) {
         <Box
           sx={{
             height: "95dvh",
+            // border: "1px solid red",
+            backgroundColor: "background.paper",
           }}
         >
           <CreatePost />
