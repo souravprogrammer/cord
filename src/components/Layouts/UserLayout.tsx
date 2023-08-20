@@ -24,7 +24,11 @@ const SwipeableDrawer = dynamic(() => import("@mui/material/SwipeableDrawer"));
 const CreatePost = dynamic(() => import("@/components/Post/CreatePost"));
 
 // Page: ReactNode, pageProps: any
-export default function UserLayout({ children }: PropsWithChildren) {
+
+type Props = {
+  showNav?: boolean;
+} & PropsWithChildren;
+export default function UserLayout({ children, showNav = true }: Props) {
   const router = useRouter();
   const [width, setWidth] = useState(900);
   const [isPending, transistion] = useTransition();
@@ -32,11 +36,11 @@ export default function UserLayout({ children }: PropsWithChildren) {
   const open = useStore((state) => state.openThreadModal);
   const setOpen = useStore((state) => state.setOpenThreadModal);
   const setThread = useStore((state) => state.setThread);
-  const home =
-    router.pathname.includes("/home") ||
-    router.pathname.includes("/activity") ||
-    (router.pathname.includes("/search") && width <= 870) ||
-    (router.pathname.includes("/profile") && width <= 870);
+  // const home =
+  //   router.pathname.includes("/home") ||
+  //   router.pathname.includes("/activity") ||
+  //   (router.pathname.includes("/search") && width <= 870) ||
+  //   (router.pathname.includes("/profile") && width <= 870);
 
   const handleWindowResize = useCallback((event: any) => {
     transistion(() => {
@@ -116,7 +120,7 @@ export default function UserLayout({ children }: PropsWithChildren) {
           ref={ref}
           sx={{
             display: "grid",
-            gridTemplateColumns: { sm: "1fr", md: home ? "1fr 4fr" : "1fr" },
+            gridTemplateColumns: { sm: "1fr", md: showNav ? "1fr 4fr" : "1fr" },
             gap: "8px",
             paddingTop: "24px",
             minHeight: "calc(100dvh - 55px)",
@@ -125,26 +129,25 @@ export default function UserLayout({ children }: PropsWithChildren) {
         >
           <Box
             sx={{
-              display: home ? "" : "none",
               position: {
                 xs: "fixed",
                 sm: "fixed",
-                md: "relative",
+                md: showNav ? "relative" : "none",
               },
-
               zIndex: 100,
             }}
           >
-            <StickyWrapper
-              sx={{
-                display: home ? "" : "none",
-                height: "300px",
-              }}
-            >
-              <Paper>
-                <NavigationBar />
-              </Paper>
-            </StickyWrapper>
+            {
+              <StickyWrapper
+                sx={{
+                  height: "300px",
+                }}
+              >
+                <Paper>
+                  <NavigationBar showNav={showNav} />
+                </Paper>
+              </StickyWrapper>
+            }
           </Box>
           <div>{children}</div>
         </Box>

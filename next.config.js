@@ -9,3 +9,11 @@ const withPWA = require("next-pwa")({
 module.exports = withPWA({
   reactStrictMode: true,
 });
+// const withBundleAnalyzer = require("@next/bundle-analyzer")({
+//   enabled: true,
+//   openAnalyzer: true,
+// });
+
+// module.exports = withBundleAnalyzer({
+//   reactStrictMode: true,
+// });

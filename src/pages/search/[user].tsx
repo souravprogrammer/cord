@@ -29,7 +29,7 @@ export default function User({}: Props) {
   );
 
   return (
-    <UserLayout>
+    <UserLayout showNav={false}>
       <Box
         sx={{
           display: "grid",

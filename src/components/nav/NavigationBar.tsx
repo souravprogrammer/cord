@@ -17,14 +17,14 @@ import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
 import { User } from "@/Type";
 
-function NavigationBar({ pageProps }: { pageProps?: any }) {
+function NavigationBar({ showNav = true }: { showNav?: boolean }) {
   return (
     <div
       style={{
         flex: 1,
       }}
     >
-      <SideList />
+      <SideList nav={showNav} />
     </div>
   );
 }
@@ -70,7 +70,7 @@ const SidebarListMobile = [
     path: "/search/",
   },
 ];
-const SideList = () => {
+const SideList = ({ nav }: { nav: boolean }) => {
   const { activePage, changePage } = useStore((state) => state);
   const [value, setValue] = useState(0);
   const session = useSession();
@@ -102,49 +102,51 @@ const SideList = () => {
 
   return (
     <>
-      <Box
-        role="presentation"
-        sx={{
-          display: {
-            xs: "none",
-            sm: "none",
-            md: "block",
-          },
-        }}
-      >
-        <List>
-          {SidebarList.map((item) => {
-            return (
-              <ListItem
-                key={item.title}
-                disablePadding
-                onClick={() => {
-                  changePage(item.page as any);
-                  router.push(item.path);
-                }}
-                sx={
-                  activePage === item.page
-                    ? {
-                        backgroundColor: "rgba(0,0,0,0.1)",
-                        color: "primary.main",
-                        borderLeft: "4px solid",
-                        borderColor: "primary.main",
-                      }
-                    : {}
-                }
-              >
-                <ListItemButton sx={{}}>
-                  <ListItemIcon>
-                    <item.Icon />
-                  </ListItemIcon>
+      {nav ? (
+        <Box
+          role="presentation"
+          sx={{
+            display: {
+              xs: "none",
+              sm: "none",
+              md: "block",
+            },
+          }}
+        >
+          <List>
+            {SidebarList.map((item) => {
+              return (
+                <ListItem
+                  key={item.title}
+                  disablePadding
+                  onClick={() => {
+                    changePage(item.page as any);
+                    router.push(item.path);
+                  }}
+                  sx={
+                    activePage === item.page
+                      ? {
+                          backgroundColor: "rgba(0,0,0,0.1)",
+                          color: "primary.main",
+                          borderLeft: "4px solid",
+                          borderColor: "primary.main",
+                        }
+                      : {}
+                  }
+                >
+                  <ListItemButton sx={{}}>
+                    <ListItemIcon>
+                      <item.Icon />
+                    </ListItemIcon>
 
-                  <ListItemText primary={item.title} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-      </Box>
+                    <ListItemText primary={item.title} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Box>
+      ) : null}
       <Paper
         sx={{
           display: {

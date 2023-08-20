@@ -3,9 +3,8 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextPage } from "next";
 import { ComponentType, ReactElement, ReactNode, useMemo } from "react";
-import getDesignTheme from "@/components/theme/getDesignTheme";
-import { QueryClientProvider, Hydrate } from "react-query";
 import { queryClient } from "@/utils/QueryClient";
+import { QueryClientProvider } from "react-query";
 import { SessionProvider } from "next-auth/react";
 import {
   createTheme,
@@ -13,6 +12,8 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material";
+
+import getDesignTheme from "@/components/theme/getDesignTheme";
 import { ThemeOptions } from "@mui/material/styles";
 
 type Page<P = {}> = NextPage<P> & {
@@ -38,11 +39,10 @@ export default function App({
     <>
       <Head>
         <meta name="application-name" content="PWA App" />
-
         <meta name="theme-color" content="#999999" />
-        <meta name="theme-color" content="#4285f4" />
+        {/* <meta name="theme-color" content="#4285f4" />
         <meta name="msapplication-navbutton-color" content="#4285f4" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="#4285f4" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#4285f4" /> */}
         <meta name="view-transition" content="same-origin" />
         <meta
           name="viewport"
@@ -51,24 +51,17 @@ export default function App({
       </Head>
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.deState}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <div
-                style={{
-                  maxWidth: "100vw",
-                  backgroundColor: "rgb(243, 242, 239)",
-                }}
-              >
-                {/* {Component.getLayout ? (
-                  Component.getLayout(<Component {...pageProps} />)
-                ) : (
-                  <Component {...pageProps} />
-                )} */}
-                <Component {...pageProps} />
-              </div>
-            </ThemeProvider>
-          </Hydrate>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <div
+              style={{
+                maxWidth: "100vw",
+                backgroundColor: "rgb(243, 242, 239)",
+              }}
+            >
+              <Component {...pageProps} />
+            </div>
+          </ThemeProvider>
         </QueryClientProvider>
       </SessionProvider>
     </>

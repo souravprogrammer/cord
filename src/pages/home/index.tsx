@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, useRef } from "react";
 import dynamic from "next/dynamic";
 
 import { GetSessionParams, getSession } from "next-auth/react";
@@ -14,9 +14,15 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { likePost, unlike, getHomeThreads } from "@/utils/QueryClient";
 import UserLayout from "@/components/Layouts/UserLayout";
-import ShareDrawer from "@/components/card/ShareDrawer";
+import MySwipeableDrawer from "@/components/utils/MySwipeableDrawer";
+// import ShareDrawer from "@/components/card/ShareDrawer";
 
 type Props = { user: User };
+
+const ShareDrawer = dynamic(() => import("@/components/card/ShareDrawer"), {
+  ssr: false,
+  suspense: true,
+});
 
 const ProfileSide = dynamic(() => import("@/components/nav/ProfileSide"));
 const StickyWrapper = dynamic(() => import("@/components/utils/StickyWrapper"));
@@ -28,9 +34,10 @@ const Post = dynamic(() => import("@/components/Post/Post"));
 
 function Index({ user }: Props) {
   const changePage = useStore((state: StoreState) => state.changePage);
-  const [openShare, setOpenShare] = useState<boolean>(false);
+  // const [openShare, setOpenShare] = useState<boolean>(false);
   const setThread = useStore((state) => state.setThread);
   const queryClient = useQueryClient();
+  const shareRef = useRef<any>();
 
   const {
     data: therads,
@@ -120,7 +127,7 @@ function Index({ user }: Props) {
                   onLike={handlePostLikeDisLike}
                   onReshare={(thread: Thread) => {
                     setThread(thread);
-                    setOpenShare(true);
+                    shareRef.current.setOpen(true);
                   }}
                 />
               );
@@ -169,6 +176,7 @@ function Index({ user }: Props) {
             </Box>
           ) : null}
         </div>
+
         <Box
           sx={{
             display: {
@@ -184,14 +192,12 @@ function Index({ user }: Props) {
             </Paper>
           </StickyWrapper>
         </Box>
-        <ShareDrawer
-          open={openShare}
-          onClose={() => {
-            setOpenShare(false);
-          }}
-          onClickClose={() => setOpenShare(false)}
-          user={user}
-        />
+
+        <Suspense fallback={"loading..."}>
+          <MySwipeableDrawer ref={shareRef}>
+            <ShareDrawer user={user} />
+          </MySwipeableDrawer>
+        </Suspense>
       </Box>
     </UserLayout>
   );
