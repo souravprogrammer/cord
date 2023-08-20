@@ -38,7 +38,7 @@ export default function Index({ user }: Props) {
           gap: "8px",
         }}
       >
-        {(isLoading || isFetching) && (
+        {isLoading || isFetching ? (
           <>
             <div
               style={{
@@ -49,8 +49,7 @@ export default function Index({ user }: Props) {
               <CircularProgress />
             </div>
           </>
-        )}
-        {(!isLoading || !isFetching) &&
+        ) : (
           data?.activity?.map((activity: any, index: number) => {
             return (
               <NotifiactionCard
@@ -59,7 +58,8 @@ export default function Index({ user }: Props) {
                 activity={activity as Activity}
               />
             );
-          })}
+          })
+        )}
       </div>
     </UserLayout>
   );
