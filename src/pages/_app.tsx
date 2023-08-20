@@ -40,6 +40,9 @@ export default function App({
       <Head>
         <meta name="application-name" content="PWA App" />
         <meta name="theme-color" content="#999999" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#fff" />
+        <meta name="msapplication-navbutton-color" content="#000" />
+
         {/* <meta name="theme-color" content="#4285f4" />
         <meta name="msapplication-navbutton-color" content="#4285f4" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#4285f4" /> */}
