@@ -1,4 +1,4 @@
-// import "@/styles/globals.css";
+import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextPage } from "next";
@@ -39,11 +39,9 @@ export default function App({
     <>
       <Head>
         <meta name="application-name" content="Cord" />
-        <meta name="theme-color" content={mode === "light" ? "#fff" : "#000"} />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content={mode === "light" ? "#fff" : "#000"}
-        />
+        <meta name="view-transition" content="same-origin" />
+        <meta name="theme-color" content={"transparent"} />
+
         {/* 
         <meta
           name="msapplication-navbutton-color"
@@ -53,7 +51,6 @@ export default function App({
           name="msapplication-navbutton-color"
           content={mode === "light" ? "#fff" : "#000"}
         /> */}
-        <meta name="view-transition" content="same-origin" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
