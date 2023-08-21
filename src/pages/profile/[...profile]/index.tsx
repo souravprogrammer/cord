@@ -14,7 +14,6 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NextRouter, useRouter } from "next/dist/client/router";
 import { likePost, unlike } from "@/utils/QueryClient";
 import { useStore } from "@/utils";
-import { notFound } from "next/navigation";
 import MySwipeableDrawer from "@/components/utils/MySwipeableDrawer";
 
 const ProfileCard = dynimic(() => import("@/components/profile/ProfileCard"), {
@@ -25,11 +24,6 @@ const ProfileCard = dynimic(() => import("@/components/profile/ProfileCard"), {
 const ShareDrawer = dynimic(() => import("@/components/card/ShareDrawer"));
 const Post = dynimic(() => import("@/components/Post/Post"));
 
-interface userProfileType extends User {
-  following: { count: number };
-  followers: { count: number };
-  thread: Thread[];
-}
 type Props = {
   user: User;
   myProfile: boolean;
@@ -38,7 +32,6 @@ type Props = {
 export default function Index({ user, myProfile }: Props) {
   const router: NextRouter = useRouter();
   const queryclient = useQueryClient();
-  const [openShare, setOpenShare] = useState(false);
   const setThread = useStore((state) => state.setThread);
   const shareRef = useRef<any>();
 
@@ -125,6 +118,8 @@ export default function Index({ user, myProfile }: Props) {
 }
 
 export async function getServerSideProps(context: any) {
+  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+  useStore.setState({ themeMode: isDark ? "dark" : "light" });
   const userId = context.params.profile[0];
   const session: any = await getSession(context as GetSessionParams);
 

@@ -22,6 +22,8 @@ export const typeDefs = gql`
     user (id : ID! ,userId : ID) : User
     users (name : String) : [User!]
     getThreads ( userId : String) : [Thread!]
+    getThread ( threadId : String!) : Thread!
+
     getHomeThreads ( page : ThreadInput! ) : [Thread!]
     activity(userId : ID!) : [Activity!]
     }

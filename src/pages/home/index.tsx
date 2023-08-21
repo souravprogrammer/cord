@@ -1,4 +1,4 @@
-import React, { useState, Suspense, useRef } from "react";
+import React, { useState, Suspense, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 import { GetSessionParams, getSession } from "next-auth/react";
@@ -34,7 +34,6 @@ const Post = dynamic(() => import("@/components/Post/Post"));
 
 function Index({ user }: Props) {
   const changePage = useStore((state: StoreState) => state.changePage);
-  // const [openShare, setOpenShare] = useState<boolean>(false);
   const setThread = useStore((state) => state.setThread);
   const queryClient = useQueryClient();
   const shareRef = useRef<any>();
@@ -48,11 +47,10 @@ function Index({ user }: Props) {
   } = useInfiniteQuery(
     ["home"],
     ({ pageParam = 1 }) =>
-      getHomeThreads({ page: { userId: user.id, page: pageParam, size: 50 } }),
+      getHomeThreads({ page: { userId: user.id, page: pageParam, size: 8 } }),
     {
       getNextPageParam: (_lastpage: any, pages) => {
-        console.log("page", _lastpage, pages);
-        return _lastpage?.getHomeThreads?.length < 50 ? null : pages.length + 1;
+        return _lastpage?.getHomeThreads?.length < 8 ? null : pages.length + 1;
       },
       staleTime: 60000,
       cacheTime: 50000,
@@ -205,6 +203,8 @@ function Index({ user }: Props) {
 export default React.memo(Index);
 
 export async function getServerSideProps(context: GetSessionParams) {
+  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+  useStore.setState({ themeMode: isDark ? "dark" : "light" });
   const session = await getSession(context);
   if (session === null) {
     return {

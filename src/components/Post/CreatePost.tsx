@@ -177,8 +177,9 @@ export default function CreatePost({}: Props) {
         </Box>
       </Box>
       <Paper
-        elevation={0}
+        elevation={1}
         sx={{
+          boxShadow: "none",
           gridArea: "space",
           display: "flex",
           justifyContent: "space-between",

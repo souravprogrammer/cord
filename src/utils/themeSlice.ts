@@ -12,9 +12,10 @@ export const createThemeMode: StateCreator<Theme> = (
     something?: any
 ) => {
     return {
-        themeMode: "light",
+        themeMode: typeof window !== "undefined" ? localStorage.getItem("theme__") as Mode : "dark",
         setThemeMode: (mode: Mode): void => {
             set({ themeMode: mode });
+            document.cookie = "theme=" + mode
             localStorage.setItem("theme__", mode);
         },
 

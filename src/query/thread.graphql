@@ -32,3 +32,29 @@ query getHomeThreads($page: ThreadInput!) {
     }
   }
 }
+
+query getThread($threadId: String!) {
+  getThread(threadId: $threadId) {
+    _id
+    userId
+    name
+    email
+    image
+    content
+    media
+    timeStamp
+    likes
+    liked
+    thread {
+      userId
+      name
+      email
+      image
+      content
+      media
+      timeStamp
+      likes
+      liked
+    }
+  }
+}

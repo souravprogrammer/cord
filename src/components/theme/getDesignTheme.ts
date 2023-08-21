@@ -4,17 +4,14 @@ const getDesignTheme = (mode: string) => ({
         ...(mode === "light"
             ? {
                 type: "light",
-                // palette values for light mode
-                // primary: {
-                //   light: "#93a5ff",
-                //   main: "#556ee6",
-                //   dark: "#485ec4",
-                // },
-                // secondary: {
-                //   light: "#ffa726",
-                //   main: "#EA6823",
-                //   dark: "#fb8c00",
-                // },
+                typography: {
+                    fontFamily: [
+
+                        'Poppins',
+                        'cursive',
+                    ].join(','),
+                },
+
                 border: {
                     main: "rgba(0,0,0,0.2)",
                 },
@@ -30,39 +27,12 @@ const getDesignTheme = (mode: string) => ({
                 primary: {
                     main: "#000",
                 },
-                // primary: {
-                //     main: "#ff7043",
-                // },
-                // secondary: {
-                //     main: "#c2185b",
-                // },
-                // button: {
-                //     main: "#1976d2",
-                // },
-                // contras: {
-                //     main: "#000000",
-                // },
-                // current: {
-                //     main: "#ffffff",
-                // },
-                // disable: {
-                //     light: "#8b8e9d",
-                //     main: "#74788d",
-                //     dark: "#636678",
-                //     contrastText: "#fff",
-                // },
+
                 background: {
                     default: "rgb(243, 242, 239)",
                     dark: "#2a3042",
                     paper: "#fff",
                 },
-                // icon: {
-                //     green: "#6fb33c",
-                //     warning: "#f1b44c",
-                //     error: "#f46a6a",
-                //     sidebar: "#a6b0cf",
-                //     sidebar1: "#ffffff",
-                // },
                 text: {
                     head: "#000",
                     normal: "#00000099",

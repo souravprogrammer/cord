@@ -107,6 +107,7 @@ export type Query = {
   __typename?: 'Query';
   activity?: Maybe<Array<Activity>>;
   getHomeThreads?: Maybe<Array<Thread>>;
+  getThread: Thread;
   getThreads?: Maybe<Array<Thread>>;
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
@@ -120,6 +121,11 @@ export type QueryActivityArgs = {
 
 export type QueryGetHomeThreadsArgs = {
   page: ThreadInput;
+};
+
+
+export type QueryGetThreadArgs = {
+  threadId: Scalars['String']['input'];
 };
 
 
@@ -195,6 +201,7 @@ export type UserInput = {
 export type UserProfileInput = {
   _id: Scalars['String']['input'];
   bio?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -246,6 +253,13 @@ export type GetHomeThreadsQueryVariables = Exact<{
 
 
 export type GetHomeThreadsQuery = { __typename?: 'Query', getHomeThreads?: Array<{ __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null }> | null };
+
+export type GetThreadQueryVariables = Exact<{
+  threadId: Scalars['String']['input'];
+}>;
+
+
+export type GetThreadQuery = { __typename?: 'Query', getThread: { __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null } };
 
 export type GetUsersQueryVariables = Exact<{
   name: Scalars['String']['input'];
@@ -368,6 +382,33 @@ export const GetHomeThreadsDocument = gql`
   }
 }
     `;
+export const GetThreadDocument = gql`
+    query getThread($threadId: String!) {
+  getThread(threadId: $threadId) {
+    _id
+    userId
+    name
+    email
+    image
+    content
+    media
+    timeStamp
+    likes
+    liked
+    thread {
+      userId
+      name
+      email
+      image
+      content
+      media
+      timeStamp
+      likes
+      liked
+    }
+  }
+}
+    `;
 export const GetUsersDocument = gql`
     query getUsers($name: String!) {
   users(name: $name) {
@@ -464,6 +505,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getHomeThreads(variables: GetHomeThreadsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetHomeThreadsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetHomeThreadsQuery>(GetHomeThreadsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getHomeThreads', 'query');
+    },
+    getThread(variables: GetThreadQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetThreadQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetThreadQuery>(GetThreadDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getThread', 'query');
     },
     getUsers(variables: GetUsersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetUsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUsersQuery>(GetUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUsers', 'query');

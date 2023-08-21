@@ -11,6 +11,7 @@ import { getUsers } from "@/utils/QueryClient";
 import { useQuery } from "react-query";
 import Box from "@mui/material/Box";
 import { getSession } from "next-auth/react";
+import { useStore } from "@/utils";
 // import dynamic from "next/dynamic";
 
 import UserLayout from "@/components/Layouts/UserLayout";
@@ -71,6 +72,8 @@ export default function User({}: Props) {
 }
 
 export async function getServerSideProps(context: any) {
+  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+  useStore.setState({ themeMode: isDark ? "dark" : "light" });
   const session = await getSession(context);
 
   if (session === null) {

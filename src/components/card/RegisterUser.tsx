@@ -58,6 +58,7 @@ export default function RegisterUser({ elevation }: Props) {
     <Paper
       elevation={elevation ?? 1}
       sx={{
+        boxShadow: "none",
         padding: "26px 28px",
         width: "100%",
         maxWidth: "500px",

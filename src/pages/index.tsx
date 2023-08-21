@@ -3,14 +3,16 @@ import Image from "next/image";
 import ButtonGoogle from "@/styles/Button.module.css";
 import { Inter } from "next/font/google";
 import Button from "@mui/material/Button";
-import { Typography, Box, Modal, SwipeableDrawer } from "@mui/material";
+import { Typography, Box, Modal, SwipeableDrawer, Paper } from "@mui/material";
 import { signIn, getSession, GetSessionParams } from "next-auth/react";
 import RegisterUser from "@/components/card/RegisterUser";
 import { useRef, useState } from "react";
+import { useStore } from "@/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);
+  const mode = useStore((state) => state.themeMode);
   const ref = useRef<any>();
   return (
     <>
@@ -43,7 +45,7 @@ export default function Home() {
             }}
           />
 
-          <Box
+          <Paper
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -53,7 +55,7 @@ export default function Home() {
             }}
           >
             <Image
-              src="/icon.png"
+              src={mode == "light" ? "/icon.png" : "/icon_dark.png"}
               loading="lazy"
               width={48}
               height={48}
@@ -119,7 +121,7 @@ export default function Home() {
                 Sign In
               </Button>
             </Box>
-          </Box>
+          </Paper>
         </Box>
         <Modal
           onClose={() => {
@@ -158,15 +160,15 @@ export default function Home() {
             keepMounted: false,
           }}
         >
-          <Box
+          <Paper
             sx={{
               height: "90dvh",
               display: "flex",
               justifyContent: "center",
             }}
           >
-            <RegisterUser elevation={0} />
-          </Box>
+            <RegisterUser />
+          </Paper>
         </SwipeableDrawer>
       </main>
     </>
@@ -174,6 +176,8 @@ export default function Home() {
 }
 
 export async function getServerSideProps(context: GetSessionParams) {
+  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+  useStore.setState({ themeMode: isDark ? "dark" : "light" });
   const session = await getSession(context);
 
   if (session !== null) {

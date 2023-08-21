@@ -160,6 +160,72 @@ async function activity(parent: any, args: { userId: string }) {
 }
 export const resolver = {
     Query: {
+
+        getThread: async (parent: unknown, args: { threadId: string }) => {
+            const threads = await Thread.aggregate([
+                {
+                    $match: {
+                        _id: new mongoose.Types.ObjectId(args.threadId)
+                    }
+                }, {
+                    $lookup:
+                    {
+                        from: "users",
+                        localField: "userId",
+                        foreignField: "_id",
+                        as: "user"
+                    }
+                }, {
+                    $unwind: "$user"
+                },
+                {
+                    $lookup:
+                    {
+                        from: "likes",
+                        let: {
+                            userId: "$userId",
+                            threadId: "$_id"
+                        },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$userId", "$userId"] },
+                                            { $eq: ["$threadId", "$$threadId"] }
+                                        ]
+                                    }
+                                }
+                            },
+                        ],
+                        as: "like"
+                    }
+                },
+                {
+                    $addFields: {
+                        liked: { $gt: [{ $size: "$like" }, 0] }
+                    }
+                },
+                {
+                    $project: {
+                        name: "$user.name",
+                        email: "$user.email",
+                        image: "$user.image",
+                        userId: "$userId",
+                        _id: "$_id",
+                        threadId: "$threadId",
+                        content: "$content",
+                        media: "$media",
+                        timeStamp: "$timeStamp",
+                        likes: "$likes",
+                        liked: "$liked",
+
+                    }
+                }
+            ])
+            return threads.length === 1 ? threads[0] : null
+
+        },
         users: async (parent: any, args: any) => {
             const users = await User.find({
                 name: { $regex: new RegExp(args.name, "i") }

@@ -30,7 +30,7 @@ type Props = {
 } & PropsWithChildren;
 export default function UserLayout({ children, showNav = true }: Props) {
   const router = useRouter();
-  const [width, setWidth] = useState(900);
+  // const [width, setWidth] = useState(900);
   const [isPending, transistion] = useTransition();
   const ref = useRef<any>();
   const open = useStore((state) => state.openThreadModal);
@@ -42,27 +42,27 @@ export default function UserLayout({ children, showNav = true }: Props) {
   //   (router.pathname.includes("/search") && width <= 870) ||
   //   (router.pathname.includes("/profile") && width <= 870);
 
-  const handleWindowResize = useCallback((event: any) => {
-    transistion(() => {
-      setWidth(window.innerWidth);
-    });
-  }, []);
+  // const handleWindowResize = useCallback((event: any) => {
+  //   transistion(() => {
+  //     setWidth(window.innerWidth);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    setWidth(window.innerWidth);
-  }, []);
+  // useEffect(() => {
+  //   setWidth(window.innerWidth);
+  // }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", handleWindowResize);
-    }
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     window.addEventListener("resize", handleWindowResize);
+  //   }
 
-    return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("resize", handleWindowResize);
-      }
-    };
-  }, [handleWindowResize]);
+  //   return () => {
+  //     if (typeof window !== "undefined") {
+  //       window.removeEventListener("resize", handleWindowResize);
+  //     }
+  //   };
+  // }, [handleWindowResize]);
 
   return (
     <>
@@ -109,7 +109,6 @@ export default function UserLayout({ children, showNav = true }: Props) {
         <Box
           sx={{
             height: "95dvh",
-            // border: "1px solid red",
             backgroundColor: "background.paper",
           }}
         >

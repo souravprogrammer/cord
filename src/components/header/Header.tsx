@@ -23,6 +23,7 @@ import { useStore } from "@/utils";
 import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
+import { useCookies } from "react-cookie";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -81,6 +82,7 @@ function Header({ sear }: Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const setTheme = useStore((state) => state.setThemeMode);
   const themeMode = useStore((state) => state.themeMode);
+  const [, setCookies] = useCookies(["theme"]);
 
   const showSearch: boolean = router.pathname.includes("/search");
   const ref = useRef<any>();
@@ -276,6 +278,7 @@ function Header({ sear }: Props) {
             color="error"
             onClick={() => {
               setTheme(themeMode === "light" ? "dark" : "light");
+              setCookies("theme", themeMode === "light" ? "dark" : "light");
             }}
             sx={(theme: any) => ({
               height: "40px",

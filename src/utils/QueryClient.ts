@@ -11,6 +11,7 @@ export const { getUsers, getUser,
     registerUser, createThread,
     followUser, unfollowUser,
     getHomeThreads, getActivities,
+    getThread,
     likePost, unlike, updateProfile } = getSdk(gqlClient);
 export const queryClient = new QueryClient({})
 

@@ -46,7 +46,7 @@ export default function ProfileSide({ user }: Props) {
             <Box>
               <Typography
                 variant="body2"
-                sx={{ fontSize: "13px", color: "#000" }}
+                sx={{ fontSize: "13px", color: "text.head" }}
                 fontWeight={"bold"}
               >
                 {user.email?.split("@")[0]}

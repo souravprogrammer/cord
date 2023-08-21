@@ -17,6 +17,7 @@ const EditProfileDrawer = dynimic(
   () => import("@/components/card/EditProfileDrawer"),
   {
     ssr: false,
+    suspense: true,
   }
 );
 

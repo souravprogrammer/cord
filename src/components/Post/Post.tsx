@@ -38,7 +38,12 @@ type Props = {
 
 export default function Post({ user, thread, reposted, ...props }: Props) {
   return (
-    <Paper elevation={reposted ? 0 : 1}>
+    <Paper
+      elevation={reposted ? 0 : 1}
+      sx={{
+        borderRadius: "18px",
+      }}
+    >
       <Box
         sx={{
           padding: reposted ? "6px" : "16px",
@@ -170,7 +175,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
             </Typography>
           </Box>
         </Box>
-        <Box sx={{ gridArea: "content" }}>
+        <Box sx={{ gridArea: "content", p: 1 }}>
           <Typography variant="body2">{thread?.content}</Typography>
           <Box>
             {thread?.media?.map((img: string, index) => {
@@ -252,9 +257,9 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
             color={"followingButton" as "primary"}
             onClick={async () => {
               navigator.share({
-                url: "profile/" + user?.id,
-                title: "my best therad",
-                text: "hey checkout this thread",
+                url: "/home/" + thread._id,
+                title: "cord",
+                text: thread.content ?? thread.thread?.content,
               });
             }}
             startIcon={<ShareIcon sx={{ height: "20px" }} />}

@@ -4,24 +4,20 @@ import StickyWrapper from "@/components/utils/StickyWrapper";
 import UserLayout from "@/components/Layouts/UserLayout";
 import { GetSessionParams, getSession, useSession } from "next-auth/react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { getHomeThreads, getUsers } from "@/utils/QueryClient";
+import { getHomeThreads, getThread, getUsers } from "@/utils/QueryClient";
 import Post from "@/components/Post/Post";
 import { Paper } from "@mui/material";
-import { User } from "@/Type";
+import { Thread, User } from "@/Type";
 import { useStore } from "@/utils";
 import { StoreState } from "@/utils/Store";
 import { likePost, unlike } from "@/utils/QueryClient";
 import Box from "@mui/material/Box";
-type Props = { user: User };
+type Props = { user: User; thread: Thread };
 
-export default function Index({ user }: Props) {
-  const session = useSession();
+export default function Index({ user, thread }: Props) {
+  console.log(thread);
   const changePage = useStore((state: StoreState) => state.changePage);
-  // const { data: therads, isLoading } = useQuery(["home"], () =>
-  //   getHomeThreads({ userId: user.id })
-  // );
   const queryClient = useQueryClient();
-
   const { mutate: mutateLikePost } = useMutation({
     mutationFn: likePost,
     onSuccess: () => {
@@ -73,13 +69,9 @@ export default function Index({ user }: Props) {
           }}
         >
           <Post
-            user={{
-              name: "sourav sharma",
-              image: "",
-              id: "",
-              email: "asd",
-            }}
-            thread={{ content: "hello world" } as any}
+            user={{ ...thread, id: thread.userId } as any}
+            thread={thread}
+            onLike={handlePostLikeDisLike}
           />
         </div>
         <Box
@@ -101,20 +93,37 @@ export default function Index({ user }: Props) {
     </UserLayout>
   );
 }
-export async function getServerSideProps(context: GetSessionParams) {
+export async function getServerSideProps(context: any) {
+  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+  useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  const threadId = context.params.thread;
+
   const session = await getSession(context);
-  if (session === null) {
+
+  try {
+    const thread = await getThread({ threadId: threadId });
+    if (!thread.getThread) {
+      return {
+        notFound: true,
+      };
+    }
+    if (session === null) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/",
+        },
+      };
+    }
     return {
-      redirect: {
-        permanent: false,
-        destination: "/",
+      props: {
+        user: session.user,
+        thread: thread.getThread,
       },
     };
+  } catch (err) {
+    return {
+      notFound: true,
+    };
   }
-  return {
-    props: {
-      user: session.user,
-      page: 0,
-    },
-  };
 }
