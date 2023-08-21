@@ -259,23 +259,41 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           <Button
             color={"followingButton" as "primary"}
             onClick={async () => {
-              const canvas = await html2canvas(ref.current);
-              const data = canvas.toDataURL("image/jpg");
-              var decodedData = atob(data?.split(",")[1]); // Split at ',' to remove the "data:image/png;base64," part
-              // Convert the decoded data to a Uint8Array
-              let byteArray = new Uint8Array(decodedData.length);
-              for (let i = 0; i < decodedData.length; i++) {
-                byteArray[i] = decodedData.charCodeAt(i);
+              try {
+                const canvas = await html2canvas(ref.current);
+                const data = canvas.toDataURL("image/jpg");
+                var decodedData = atob(data?.split(",")[1]); // Split at ',' to remove the "data:image/png;base64," part
+                // Convert the decoded data to a Uint8Array
+                let byteArray = new Uint8Array(decodedData.length);
+                for (let i = 0; i < decodedData.length; i++) {
+                  byteArray[i] = decodedData.charCodeAt(i);
+                }
+                // // Create a Blob from the Uint8Array
+                let blob = new Blob([byteArray], { type: "image/jpg" }); // Change 'image/png' to the appropriate MIME type
+                let file = new File([blob], `image.jpg`, { type: blob.type });
+
+                if (
+                  navigator.canShare &&
+                  navigator.canShare({ files: [file] })
+                ) {
+                  console.log("hello", file);
+                  navigator.share({
+                    files: [file],
+                    url: "/home/" + thread._id,
+                    title: "cord",
+                    text: thread.content ?? thread.thread?.content,
+                  });
+                } else {
+                  console.log("share");
+                  navigator.share({
+                    url: "/home/" + thread._id,
+                    title: "cord",
+                    text: thread.content ?? thread.thread?.content,
+                  });
+                }
+              } catch (err: any) {
+                console.log(err.message);
               }
-              // Create a Blob from the Uint8Array
-              let blob = new Blob([byteArray], { type: "image/png" }); // Change 'image/png' to the appropriate MIME type
-              let file = new File([blob], `${Date.now}`, { type: blob.type });
-              navigator.share({
-                url: "/home/" + thread._id,
-                title: "cord",
-                text: thread.content ?? thread.thread?.content,
-                files: [file],
-              });
             }}
             startIcon={<ShareIcon sx={{ height: "20px" }} />}
           ></Button>

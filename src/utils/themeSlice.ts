@@ -15,10 +15,14 @@ export const createThemeMode: StateCreator<Theme> = (
         themeMode: typeof window !== "undefined" ? (() => {
             const mode = localStorage.getItem("theme__")
             if (!mode) {
+
                 localStorage.setItem("theme__", "light")
+                document.cookie = "theme=" + "light"
                 return "light"
             } else {
-                return localStorage.getItem("theme__")
+                const th = localStorage.getItem("theme__")
+                document.cookie = "theme=" + th
+                return th
             }
 
         })() as Mode : "light",
