@@ -4,13 +4,13 @@ const getDesignTheme = (mode: string) => ({
         ...(mode === "light"
             ? {
                 type: "light",
-                typography: {
-                    fontFamily: [
+                // typography: {
+                //     fontFamily: [
 
-                        'Poppins',
-                        'cursive',
-                    ].join(','),
-                },
+                //         'Poppins',
+                //         'cursive',
+                //     ].join(','),
+                // },
 
                 border: {
                     main: "rgba(0,0,0,0.2)",
@@ -117,9 +117,9 @@ const getDesignTheme = (mode: string) => ({
 
             }),
     },
-    typography: {
-        fontFamily: ["Poppins", "sans-serif"].join(","),
-    },
+    // typography: {
+    //     fontFamily: ["Poppins", "sans-serif"].join(","),
+    // },
     selected: {},
 });
 
