@@ -21,18 +21,17 @@ import { ThemeOptions } from "@mui/material/styles";
 import { useStore } from "@/utils";
 
 type Props = AppProps & {
-  Component: NextPage;
-  themeMode: string;
+  Component: any;
 };
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
-}: Props) {
+}: AppProps) {
   const mode = useStore((store) => store.themeMode);
   const theme = useMemo(
     () =>
-      responsiveFontSizes(createTheme(getDesignTheme(mode) as ThemeOptions)),
+      responsiveFontSizes(createTheme(getDesignTheme("light") as ThemeOptions)),
     [mode]
   );
 
@@ -40,7 +39,7 @@ export default function App({
     <>
       <Head>
         <meta name="application-name" content="Cord" />
-        <meta name="theme-color" content={mode === "light" ? "#fff" : "#000"} />
+        {/* <meta name="theme-color" content={mode === "light" ? "#fff" : "#000"} />
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content={mode === "light" ? "#fff" : "#000"}
@@ -52,16 +51,12 @@ export default function App({
         <meta
           name="msapplication-navbutton-color"
           content={mode === "light" ? "#fff" : "#000"}
-        />
-
-        {/* <meta name="theme-color" content="#4285f4" />
-        <meta name="msapplication-navbutton-color" content="#4285f4" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="#4285f4" /> */}
+        /> */}
         <meta name="view-transition" content="same-origin" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        ></meta>
+        />
       </Head>
       <NextNProgress />
       <SessionProvider session={session}>

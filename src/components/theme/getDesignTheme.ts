@@ -4,14 +4,6 @@ const getDesignTheme = (mode: string) => ({
         ...(mode === "light"
             ? {
                 type: "light",
-                // typography: {
-                //     fontFamily: [
-
-                //         'Poppins',
-                //         'cursive',
-                //     ].join(','),
-                // },
-
                 border: {
                     main: "rgba(0,0,0,0.2)",
                 },
@@ -27,7 +19,6 @@ const getDesignTheme = (mode: string) => ({
                 primary: {
                     main: "#000",
                 },
-
                 background: {
                     default: "rgb(243, 242, 239)",
                     dark: "#2a3042",
@@ -41,33 +32,13 @@ const getDesignTheme = (mode: string) => ({
                     contrasPrimary: "#ffffff",
                     contrasSecondary: "#ffffff88",
                 },
-                // border: {
-                //     main: "#eff2f7",
-                //     primary: "#495057",
-                //     scroll: " #666e7c",
-                // },
-                // shadow: {
-                //     navBar: "#12263f08",
-                // },
-                // attendance: {
-                //     present: "#3CCF4E",
-                //     leave: "#EF5B0C",
-                //     absent: "#C21010",
-                //     sports: "#277BC0",
-                //     medical: "#1CD6CE",
-                //     half: "#F6A192",
-                //     chip: "#00000014",
-                // },
             }
             : {
                 // palette values for dark mode
                 type: "dark",
-
                 primary: {
                     main: "#fff",
                 },
-
-
                 disable: {
                     light: "#8b8e9d",
                     main: "#74788d",
@@ -77,7 +48,6 @@ const getDesignTheme = (mode: string) => ({
                 followingButton: {
                     main: "rgba(255,255,255,0.5)"
                 },
-
                 icon: {
                     green: "#6fb33c",
                     warning: "#f1b44c",
@@ -93,11 +63,6 @@ const getDesignTheme = (mode: string) => ({
                     contrasPrimary: "#ffffff",
                     contrasSecondary: "#ffffff88",
                 },
-                // border: {
-                //     main: "#eff2f7",
-                //     primary: "#495057",
-                //     scroll: " #666e7c",
-                // },
                 shadow: {
                     navBar: "#12263f08",
                 },
@@ -108,18 +73,9 @@ const getDesignTheme = (mode: string) => ({
                     default: "#000",
                     paper: "#000",
                 }
-
-                // background: {
-                //     default: "#111111",
-                //     // "#222736",
-                // },
-
-
             }),
     },
-    // typography: {
-    //     fontFamily: ["Poppins", "sans-serif"].join(","),
-    // },
+
     selected: {},
 });
 
