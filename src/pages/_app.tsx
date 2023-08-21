@@ -31,7 +31,7 @@ export default function App({
   const mode = useStore((store) => store.themeMode);
   const theme = useMemo(
     () =>
-      responsiveFontSizes(createTheme(getDesignTheme("light") as ThemeOptions)),
+      responsiveFontSizes(createTheme(getDesignTheme(mode) as ThemeOptions)),
     [mode]
   );
 
@@ -39,11 +39,12 @@ export default function App({
     <>
       <Head>
         <meta name="application-name" content="Cord" />
-        {/* <meta name="theme-color" content={mode === "light" ? "#fff" : "#000"} />
+        <meta name="theme-color" content={mode === "light" ? "#fff" : "#000"} />
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content={mode === "light" ? "#fff" : "#000"}
         />
+        {/* 
         <meta
           name="msapplication-navbutton-color"
           content={mode === "light" ? "#fff" : "#000"}
