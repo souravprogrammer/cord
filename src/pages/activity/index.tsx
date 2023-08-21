@@ -66,8 +66,8 @@ export default function Index({ user }: Props) {
 }
 
 export async function getServerSideProps(context: GetSessionParams) {
-  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
-  useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  // const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+  // useStore.setState({ themeMode: isDark ? "dark" : "light" });
   const session = await getSession(context);
 
   if (session === null) {
