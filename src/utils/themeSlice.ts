@@ -15,7 +15,7 @@ export const createThemeMode: StateCreator<Theme> = (
         themeMode: typeof window !== "undefined" ? localStorage.getItem("theme__") as Mode : "light",
         setThemeMode: (mode: Mode): void => {
             set({ themeMode: mode });
-            document.cookie = "theme=" + mode
+            // document.cookie = "theme=" + mode
             localStorage.setItem("theme__", mode);
         },
 

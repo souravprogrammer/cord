@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextPage } from "next";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { queryClient } from "@/utils/QueryClient";
 import { QueryClientProvider } from "react-query";
 import { SessionProvider } from "next-auth/react";
@@ -28,19 +28,27 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const mode = useStore((store) => store.themeMode);
+
   const theme = useMemo(
     () =>
       responsiveFontSizes(createTheme(getDesignTheme(mode) as ThemeOptions)),
     [mode]
   );
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <>
       <Head>
         <meta name="application-name" content="Cord" />
         <meta name="view-transition" content="same-origin" />
-        {/* <meta name="theme-color" content={"transparent"} /> */}
+        <meta name="theme-color" content={mode === "light" ? "#fff" : "#000"} />
 
         {/* 
         <meta
