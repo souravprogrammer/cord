@@ -178,10 +178,10 @@ export default function Home() {
 }
 
 export async function getServerSideProps(context: GetSessionParams) {
-  try {
-    const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
-    useStore.setState({ themeMode: isDark ? "dark" : "light" });
-  } catch (err) {}
+  // try {
+  //   const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+  //   useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  // } catch (err) {}
   const session = await getSession(context);
 
   if (session !== null) {
