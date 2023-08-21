@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+// import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextPage } from "next";
@@ -40,7 +40,7 @@ export default function App({
       <Head>
         <meta name="application-name" content="Cord" />
         <meta name="view-transition" content="same-origin" />
-        <meta name="theme-color" content={"transparent"} />
+        {/* <meta name="theme-color" content={"transparent"} /> */}
 
         {/* 
         <meta
