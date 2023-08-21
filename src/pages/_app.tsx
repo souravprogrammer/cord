@@ -33,7 +33,9 @@ export default function App({
 
   const theme = useMemo(
     () =>
-      responsiveFontSizes(createTheme(getDesignTheme(mode) as ThemeOptions)),
+      responsiveFontSizes(
+        createTheme(getDesignTheme(mode ?? "light") as ThemeOptions)
+      ),
     [mode]
   );
   useEffect(() => {
