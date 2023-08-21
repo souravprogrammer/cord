@@ -203,8 +203,10 @@ function Index({ user }: Props) {
 export default React.memo(Index);
 
 export async function getServerSideProps(context: GetSessionParams) {
-  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
-  useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  try {
+    const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+    useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  } catch (err) {}
   const session = await getSession(context);
   if (session === null) {
     return {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -16,6 +16,7 @@ import Link from "next/dist/client/link";
 
 import { Avatar, Divider } from "@mui/material";
 import { Thread, User } from "@/Type";
+import html2canvas from "html2canvas";
 
 type LikeAction = {
   action: {
@@ -37,8 +38,10 @@ type Props = {
  */
 
 export default function Post({ user, thread, reposted, ...props }: Props) {
+  const ref = useRef<any>();
   return (
     <Paper
+      ref={ref}
       elevation={reposted ? 0 : 1}
       sx={{
         borderRadius: "18px",
@@ -256,10 +259,22 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           <Button
             color={"followingButton" as "primary"}
             onClick={async () => {
+              const canvas = await html2canvas(ref.current);
+              const data = canvas.toDataURL("image/jpg");
+              var decodedData = atob(data?.split(",")[1]); // Split at ',' to remove the "data:image/png;base64," part
+              // Convert the decoded data to a Uint8Array
+              let byteArray = new Uint8Array(decodedData.length);
+              for (let i = 0; i < decodedData.length; i++) {
+                byteArray[i] = decodedData.charCodeAt(i);
+              }
+              // Create a Blob from the Uint8Array
+              let blob = new Blob([byteArray], { type: "image/png" }); // Change 'image/png' to the appropriate MIME type
+              let file = new File([blob], `${Date.now}`, { type: blob.type });
               navigator.share({
                 url: "/home/" + thread._id,
                 title: "cord",
                 text: thread.content ?? thread.thread?.content,
+                files: [file],
               });
             }}
             startIcon={<ShareIcon sx={{ height: "20px" }} />}

@@ -30,6 +30,7 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "graphql": "^16.7.1",
+    "html2canvas": "^1.4.1",
     "micro": "^10.0.1",
     "mongodb": "^5.7.0",
     "mongoose": "^7.3.4",

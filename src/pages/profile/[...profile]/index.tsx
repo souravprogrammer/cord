@@ -118,8 +118,10 @@ export default function Index({ user, myProfile }: Props) {
 }
 
 export async function getServerSideProps(context: any) {
-  const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
-  useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  try {
+    const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+    useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  } catch (err) {}
   const userId = context.params.profile[0];
   const session: any = await getSession(context as GetSessionParams);
 

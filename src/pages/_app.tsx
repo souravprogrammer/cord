@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextPage } from "next";
 
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { queryClient } from "@/utils/QueryClient";
 import { QueryClientProvider } from "react-query";
 import { SessionProvider } from "next-auth/react";

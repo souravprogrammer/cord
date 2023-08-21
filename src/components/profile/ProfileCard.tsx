@@ -7,19 +7,11 @@ import Button from "@mui/material/Button";
 import { useMutation, useQueryClient } from "react-query";
 import { followUser, unfollowUser } from "@/utils/QueryClient";
 import { useRouter } from "next/router";
-import dynimic from "next/dynamic";
 
 import Paper from "@mui/material/Paper";
 import { User } from "@/Type";
-
 import MySwipeableDrawer from "@/components/utils/MySwipeableDrawer";
-const EditProfileDrawer = dynimic(
-  () => import("@/components/card/EditProfileDrawer"),
-  {
-    ssr: false,
-    suspense: true,
-  }
-);
+import EditProfileDrawer from "@/components/card/EditProfileDrawer";
 
 type Props = {
   data?: { user: any };
