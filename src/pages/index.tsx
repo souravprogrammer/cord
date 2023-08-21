@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import ButtonGoogle from "@/styles/Button.module.css";
-import { Inter } from "next/font/google";
 
 import Button from "@mui/material/Button";
 import { Typography, Box, Modal, SwipeableDrawer, Paper } from "@mui/material";
@@ -10,7 +9,6 @@ import { signIn, getSession, GetSessionParams } from "next-auth/react";
 import RegisterUser from "@/components/card/RegisterUser";
 import { useRef, useState } from "react";
 import { useStore } from "@/utils";
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [openModal, setOpenModal] = useState(false);

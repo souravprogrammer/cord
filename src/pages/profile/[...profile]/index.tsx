@@ -1,5 +1,5 @@
 import { GetSessionParams, getSession } from "next-auth/react";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import UserLayout from "@/components/Layouts/UserLayout";
 
 import Box from "@mui/material/Box";
@@ -16,10 +16,12 @@ import { likePost, unlike } from "@/utils/QueryClient";
 import { useStore } from "@/utils";
 import MySwipeableDrawer from "@/components/utils/MySwipeableDrawer";
 
-const ProfileCard = dynimic(() => import("@/components/profile/ProfileCard"), {
-  ssr: false,
-  suspense: true,
-});
+import ProfileCard from "@/components/profile/ProfileCard";
+
+// const ProfileCard = dynimic(() => import("@/components/profile/ProfileCard"), {
+//   ssr: false,
+//   suspense: true,
+// });
 
 const ShareDrawer = dynimic(() => import("@/components/card/ShareDrawer"));
 const Post = dynimic(() => import("@/components/Post/Post"));
@@ -82,9 +84,7 @@ export default function Index({ user, myProfile }: Props) {
         </Box>
       ) : (
         <Box>
-          <Suspense fallback={"laoding..."}>
-            <ProfileCard data={data} user={user} myProfile={myProfile} />
-          </Suspense>
+          <ProfileCard data={data} user={user} myProfile={myProfile} />
           <Box
             sx={{
               display: "grid",

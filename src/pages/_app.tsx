@@ -51,16 +51,10 @@ export default function App({
         <meta name="application-name" content="Cord" />
         <meta name="view-transition" content="same-origin" />
         <meta name="theme-color" content={mode === "light" ? "#fff" : "#000"} />
-
-        {/* 
         <meta
           name="msapplication-navbutton-color"
           content={mode === "light" ? "#fff" : "#000"}
         />
-        <meta
-          name="msapplication-navbutton-color"
-          content={mode === "light" ? "#fff" : "#000"}
-        /> */}
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"

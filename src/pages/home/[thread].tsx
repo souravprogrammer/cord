@@ -94,8 +94,10 @@ export default function Index({ user, thread }: Props) {
   );
 }
 export async function getServerSideProps(context: any) {
-  // const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
-  // useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  try {
+    const isDark = context?.req?.headers?.cookie?.includes("theme=dark");
+    useStore.setState({ themeMode: isDark ? "dark" : "light" });
+  } catch (err) {}
   const threadId = context.params.thread;
 
   const session = await getSession(context);
