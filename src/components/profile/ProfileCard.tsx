@@ -169,7 +169,6 @@ export default function ProfileCard({ data, myProfile, user }: Props) {
           }}
         >
           {data?.user?.bio}
-          {"world is crule but also a very beautiful"}
         </Typography>
         {/* Avatar Box */}
         <Avatar
