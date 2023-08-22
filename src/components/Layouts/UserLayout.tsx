@@ -1,12 +1,4 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useState,
-  useEffect,
-  useTransition,
-  useRef,
-  PropsWithChildren,
-} from "react";
+import React, { useTransition, useRef, PropsWithChildren } from "react";
 import Header from "../header/Header";
 import NavigationBar from "../nav/NavigationBar";
 import StickyWrapper from "../utils/StickyWrapper";
@@ -34,8 +26,6 @@ export default function UserLayout({
   showNav = true,
   removeNav = false,
 }: Props) {
-  const router = useRouter();
-  const [isPending, transistion] = useTransition();
   const ref = useRef<any>();
   const open = useStore((state) => state.openThreadModal);
   const setOpen = useStore((state) => state.setOpenThreadModal);
@@ -44,7 +34,6 @@ export default function UserLayout({
   return (
     <>
       <Header />
-
       {!removeNav && (
         <Fab
           size="small"
@@ -67,7 +56,6 @@ export default function UserLayout({
           <AddIcon />
         </Fab>
       )}
-
       <SwipeableDrawer
         container={ref.current as any}
         anchor="bottom"
@@ -92,7 +80,6 @@ export default function UserLayout({
           <CreatePost />
         </Box>
       </SwipeableDrawer>
-
       <Container>
         <Box
           ref={ref}

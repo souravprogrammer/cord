@@ -60,7 +60,10 @@ export default function App({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </Head>
-      <NextNProgress />
+      <NextNProgress
+        showOnShallow={true}
+        options={{ easing: "ease", speed: 500, showSpinner: false }}
+      />
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>

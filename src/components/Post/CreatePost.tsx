@@ -7,6 +7,7 @@ import {
   InputBase,
   Box,
   CircularProgress,
+  Typography,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import { useMutation } from "react-query";
@@ -67,7 +68,6 @@ export default function CreatePost({}: Props) {
         formData.append("file", img);
       }
       formData.append("upload_preset", "my-uploads");
-
       const res = await fetch(
         "https://api.cloudinary.com/v1_1/do8otauxu/upload",
         {
@@ -119,7 +119,20 @@ export default function CreatePost({}: Props) {
           alt="profile picture"
           src={user?.image}
         >
-          NM
+          <Typography
+            variant="body2"
+            sx={{
+              fontSize: {
+                sm: "12px",
+                xs: "12px",
+              },
+            }}
+          >
+            {user?.name
+              ?.split(" ")
+              .map((word: string) => word.charAt(0).toUpperCase())
+              .join("")}
+          </Typography>
         </Avatar>
       </Box>
       <Box

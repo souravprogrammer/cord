@@ -79,7 +79,7 @@ export default function Index({ user, myProfile }: Props) {
           <CircularProgress />
         </Box>
       ) : (
-        <Box>
+        <Box component={"section"}>
           <ProfileCard data={data} user={user} myProfile={myProfile} />
           <Box
             sx={{

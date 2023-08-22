@@ -110,6 +110,7 @@ function Header({ sear }: Props) {
   }
   return (
     <Paper
+      component={"header"}
       sx={{
         position: "sticky",
         top: 0,

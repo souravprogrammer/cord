@@ -41,6 +41,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
   const ref = useRef<any>();
   return (
     <Paper
+      component={"article"}
       ref={ref}
       elevation={reposted ? 0 : 1}
       sx={{
@@ -100,7 +101,14 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           alt="profile picture"
           src={user?.image}
         >
-          <Typography>
+          <Typography
+            sx={{
+              fontSize: {
+                sm: "12px",
+                xs: "12px",
+              },
+            }}
+          >
             {user?.name
               .split(" ")
               .map((word) => word.charAt(0).toUpperCase())
@@ -184,6 +192,7 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
             {thread?.media?.map((img: string, index) => {
               return (
                 <Box
+                  component={"figure"}
                   key={index}
                   sx={{
                     display: "grid",
@@ -342,9 +351,22 @@ function Replly({ user, thread, ...props }: Props) {
           },
         }}
         alt="profile picture"
-        // src={user?.image}
+        src={user?.image}
       >
-        MS
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: {
+              sm: "12px",
+              xs: "12px",
+            },
+          }}
+        >
+          {user?.name
+            ?.split(" ")
+            .map((word: string) => word.charAt(0).toUpperCase())
+            .join("")}
+        </Typography>
       </Avatar>
       <IconButton sx={{ gridArea: "options" }}>
         <MoreHorizIcon />
@@ -396,6 +418,7 @@ function Replly({ user, thread, ...props }: Props) {
             test@email.com
           </Typography>
           <Typography
+            component={"time"}
             variant="body2"
             sx={{
               color: "grey",

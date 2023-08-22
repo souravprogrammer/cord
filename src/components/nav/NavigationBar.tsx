@@ -104,6 +104,7 @@ const SideList = ({ nav }: { nav: boolean }) => {
     <>
       {nav ? (
         <Box
+          component={"nav"}
           role="presentation"
           sx={{
             display: {

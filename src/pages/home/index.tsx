@@ -90,10 +90,10 @@ function Index({ user }: Props) {
           height: "100%",
         }}
       >
-        <div
-          style={{
-            borderLeft: "1px solid rgba(0,0,0,0.1)",
-            borderRight: "1px solid rgba(0,0,0,0.1)",
+        <Box
+          sx={{
+            borderLeft: { xs: "none", md: "1px solid rgba(0,0,0,0.1)" },
+            borderRight: { xs: "none", md: "1px solid rgba(0,0,0,0.1)" },
             padding: "4px 8px",
             display: "flex",
             flexDirection: "column",
@@ -170,7 +170,7 @@ function Index({ user }: Props) {
               </Button>
             </Box>
           ) : null}
-        </div>
+        </Box>
 
         <Box
           sx={{
