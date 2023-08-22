@@ -11,7 +11,7 @@ import { SwipeableDrawer, Box } from "@mui/material";
 function MySwipableDrawer({ children }: PropsWithChildren, ref: any) {
   const cont = useRef<any>();
 
-  const [open, setOpen] = useState<boolean>();
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setOpen(false);

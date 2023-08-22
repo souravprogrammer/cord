@@ -187,7 +187,28 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           </Box>
         </Box>
         <Box sx={{ gridArea: "content", p: 1 }}>
-          <Typography variant="body2">{thread?.content}</Typography>
+          <Typography variant="body2">
+            {thread?.content
+              ?.split(/(#\w+)|(@\w+)/gm)
+              ?.map((word: string, index: number) => {
+                if (word?.match(/(#\w+)|(@\w+)/gm))
+                  return (
+                    <Box
+                      key={index}
+                      component={"a"}
+                      sx={{
+                        color: "#0A66C2",
+                        "&:hover": {
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      {word}
+                    </Box>
+                  );
+                return <React.Fragment key={index}>{word}</React.Fragment>;
+              })}
+          </Typography>
           <Box>
             {thread?.media?.map((img: string, index) => {
               return (

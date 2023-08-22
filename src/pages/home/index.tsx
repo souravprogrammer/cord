@@ -44,10 +44,10 @@ function Index({ user }: Props) {
   } = useInfiniteQuery(
     ["home"],
     ({ pageParam = 1 }) =>
-      getHomeThreads({ page: { userId: user.id, page: pageParam, size: 8 } }),
+      getHomeThreads({ page: { userId: user.id, page: pageParam, size: 50 } }),
     {
       getNextPageParam: (_lastpage: any, pages) => {
-        return _lastpage?.getHomeThreads?.length < 8 ? null : pages.length + 1;
+        return _lastpage?.getHomeThreads?.length < 50 ? null : pages.length + 1;
       },
       staleTime: 60000,
       cacheTime: 50000,
