@@ -27,16 +27,13 @@ const ShareDrawer = dynamic(() => import("@/components/card/ShareDrawer"), {
 const ProfileSide = dynamic(() => import("@/components/nav/ProfileSide"));
 const StickyWrapper = dynamic(() => import("@/components/utils/StickyWrapper"));
 const CreatePost = dynamic(() => import("@/components/Post/CreatePost"));
-
 const Post = dynamic(() => import("@/components/Post/Post"));
-
-// api is calling infinite times here
 
 function Index({ user }: Props) {
   const changePage = useStore((state: StoreState) => state.changePage);
   const setThread = useStore((state) => state.setThread);
-  const queryClient = useQueryClient();
   const shareRef = useRef<any>();
+  const queryClient = useQueryClient();
 
   const {
     data: therads,

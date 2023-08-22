@@ -3,6 +3,8 @@ const getDesignTheme = (mode: string) => ({
         mode,
         ...(mode === "light"
             ? {
+
+
                 type: "light",
                 border: {
                     main: "rgba(0,0,0,0.2)",
@@ -74,6 +76,11 @@ const getDesignTheme = (mode: string) => ({
                     paper: "#000",
                 }
             }),
+    },
+    typography: {
+        fontFamily: [
+            "poppins",
+        ].join(','),
     },
 
     selected: {},

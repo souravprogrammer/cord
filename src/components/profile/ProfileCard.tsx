@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -51,6 +51,10 @@ export default function ProfileCard({ data, myProfile, user }: Props) {
       });
     }
   };
+
+  const openOnEdit = useCallback(() => {
+    drawerRef.current.setOpen(true);
+  }, [drawerRef.current]);
 
   return (
     <Paper
@@ -191,9 +195,7 @@ export default function ProfileCard({ data, myProfile, user }: Props) {
         {/* {"Button 1"} */}
         {myProfile ? (
           <Button
-            onClick={() => {
-              drawerRef.current.setOpen(true);
-            }}
+            onClick={openOnEdit}
             variant="outlined"
             size="small"
             sx={{

@@ -16,13 +16,9 @@ import { likePost, unlike } from "@/utils/QueryClient";
 import { useStore } from "@/utils";
 import MySwipeableDrawer from "@/components/utils/MySwipeableDrawer";
 
-import ProfileCard from "@/components/profile/ProfileCard";
+// import ProfileCard from "@/components/profile/ProfileCard";
 
-// const ProfileCard = dynimic(() => import("@/components/profile/ProfileCard"), {
-//   ssr: false,
-//   suspense: true,
-// });
-
+const ProfileCard = dynimic(() => import("@/components/profile/ProfileCard"));
 const ShareDrawer = dynimic(() => import("@/components/card/ShareDrawer"));
 const Post = dynimic(() => import("@/components/Post/Post"));
 
@@ -71,7 +67,7 @@ export default function Index({ user, myProfile }: Props) {
   };
 
   return (
-    <UserLayout showNav={false}>
+    <UserLayout showNav={false} removeNav={!myProfile}>
       {isLoading ? (
         <Box
           sx={{

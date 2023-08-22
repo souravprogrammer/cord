@@ -4,17 +4,26 @@ import React, {
   forwardRef,
   useImperativeHandle,
   PropsWithChildren,
+  useEffect,
 } from "react";
 import { SwipeableDrawer, Box } from "@mui/material";
 
 function MySwipableDrawer({ children }: PropsWithChildren, ref: any) {
   const cont = useRef<any>();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>();
 
-  useImperativeHandle(ref, () => ({
-    setOpen,
-  }));
+  useEffect(() => {
+    setOpen(false);
+  }, []);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setOpen,
+    }),
+    [open, setOpen]
+  );
   return (
     <Box ref={cont}>
       <SwipeableDrawer

@@ -1,33 +1,43 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ProfileSide from "@/components/nav/ProfileSide";
 import StickyWrapper from "@/components/utils/StickyWrapper";
 import UserLayout from "@/components/Layouts/UserLayout";
 import { GetSessionParams, getSession, useSession } from "next-auth/react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { getHomeThreads, getThread, getUsers } from "@/utils/QueryClient";
+import { getThread, getUsers } from "@/utils/QueryClient";
 import Post from "@/components/Post/Post";
-import { Paper } from "@mui/material";
+import { CircularProgress, Paper } from "@mui/material";
 import { Thread, User } from "@/Type";
 import { useStore } from "@/utils";
 import { StoreState } from "@/utils/Store";
 import { likePost, unlike } from "@/utils/QueryClient";
 import Box from "@mui/material/Box";
-type Props = { user: User; thread: Thread };
+import dynamic from "next/dynamic";
+import MySwipeableDrawer from "@/components/utils/MySwipeableDrawer";
+const ShareDrawer = dynamic(() => import("@/components/card/ShareDrawer"), {
+  ssr: false,
+  suspense: true,
+});
+type Props = { user: User; threadId: string };
 
-export default function Index({ user, thread }: Props) {
-  console.log(thread);
+export default function Index({ user, threadId }: Props) {
   const changePage = useStore((state: StoreState) => state.changePage);
   const queryClient = useQueryClient();
+  const setThread = useStore((state) => state.setThread);
+  const shareRef = useRef<any>();
+  const { data: thread, isLoading } = useQuery(["thread", threadId], () =>
+    getThread({ threadId: threadId })
+  );
   const { mutate: mutateLikePost } = useMutation({
     mutationFn: likePost,
     onSuccess: () => {
-      queryClient.invalidateQueries(["home"]);
+      queryClient.invalidateQueries(["thread", threadId]);
     },
   });
   const { mutate: mutateunLikePost } = useMutation({
     mutationFn: unlike,
     onSuccess: () => {
-      queryClient.invalidateQueries(["home"]);
+      queryClient.invalidateQueries(["thread", threadId]);
     },
   });
   useEffect(() => {
@@ -48,7 +58,7 @@ export default function Index({ user, thread }: Props) {
   };
 
   return (
-    <UserLayout>
+    <UserLayout removeNav={true}>
       <Box
         sx={{
           display: "grid",
@@ -68,11 +78,31 @@ export default function Index({ user, thread }: Props) {
             height: "100%",
           }}
         >
-          <Post
-            user={{ ...thread, id: thread.userId } as any}
-            thread={thread}
-            onLike={handlePostLikeDisLike}
-          />
+          {isLoading ? (
+            <Box
+              sx={{
+                display: "grid",
+                placeItems: "center",
+                height: "100dvh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            thread?.getThread && (
+              <Post
+                user={
+                  { ...thread.getThread, id: thread?.getThread.userId } as any
+                }
+                thread={thread?.getThread as Thread}
+                onLike={handlePostLikeDisLike}
+                onReshare={(thread: Thread) => {
+                  setThread(thread);
+                  shareRef.current.setOpen(true);
+                }}
+              />
+            )
+          )}
         </div>
         <Box
           sx={{
@@ -89,6 +119,9 @@ export default function Index({ user, thread }: Props) {
             </Paper>
           </StickyWrapper>
         </Box>
+        <MySwipeableDrawer ref={shareRef}>
+          <ShareDrawer user={user} />
+        </MySwipeableDrawer>
       </Box>
     </UserLayout>
   );
@@ -103,12 +136,6 @@ export async function getServerSideProps(context: any) {
   const session = await getSession(context);
 
   try {
-    const thread = await getThread({ threadId: threadId });
-    if (!thread.getThread) {
-      return {
-        notFound: true,
-      };
-    }
     if (session === null) {
       return {
         redirect: {
@@ -120,7 +147,7 @@ export async function getServerSideProps(context: any) {
     return {
       props: {
         user: session.user,
-        thread: thread.getThread,
+        threadId: threadId,
       },
     };
   } catch (err) {

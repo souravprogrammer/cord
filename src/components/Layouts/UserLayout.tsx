@@ -27,67 +27,46 @@ const CreatePost = dynamic(() => import("@/components/Post/CreatePost"));
 
 type Props = {
   showNav?: boolean;
+  removeNav?: boolean;
 } & PropsWithChildren;
-export default function UserLayout({ children, showNav = true }: Props) {
+export default function UserLayout({
+  children,
+  showNav = true,
+  removeNav = false,
+}: Props) {
   const router = useRouter();
-  // const [width, setWidth] = useState(900);
   const [isPending, transistion] = useTransition();
   const ref = useRef<any>();
   const open = useStore((state) => state.openThreadModal);
   const setOpen = useStore((state) => state.setOpenThreadModal);
   const setThread = useStore((state) => state.setThread);
-  // const home =
-  //   router.pathname.includes("/home") ||
-  //   router.pathname.includes("/activity") ||
-  //   (router.pathname.includes("/search") && width <= 870) ||
-  //   (router.pathname.includes("/profile") && width <= 870);
-
-  // const handleWindowResize = useCallback((event: any) => {
-  //   transistion(() => {
-  //     setWidth(window.innerWidth);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   setWidth(window.innerWidth);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     window.addEventListener("resize", handleWindowResize);
-  //   }
-
-  //   return () => {
-  //     if (typeof window !== "undefined") {
-  //       window.removeEventListener("resize", handleWindowResize);
-  //     }
-  //   };
-  // }, [handleWindowResize]);
 
   return (
     <>
       <Header />
 
-      <Fab
-        size="small"
-        color="primary"
-        aria-label="add"
-        onClick={() => {
-          setOpen(true);
-        }}
-        sx={{
-          display: {
-            xs: "flex",
-            sm: "flex",
-            md: "none",
-          },
-          position: "fixed",
-          right: 8,
-          bottom: 62,
-        }}
-      >
-        <AddIcon />
-      </Fab>
+      {!removeNav && (
+        <Fab
+          size="small"
+          color="primary"
+          aria-label="add"
+          onClick={() => {
+            setOpen(true);
+          }}
+          sx={{
+            display: {
+              xs: "flex",
+              sm: "flex",
+              md: "none",
+            },
+            position: "fixed",
+            right: 8,
+            bottom: 62,
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      )}
 
       <SwipeableDrawer
         container={ref.current as any}
@@ -97,9 +76,7 @@ export default function UserLayout({ children, showNav = true }: Props) {
           setOpen(false);
           setThread(null);
         }}
-        onOpen={() => {
-          // setOpen(true);
-        }}
+        onOpen={() => {}}
         swipeAreaWidth={0}
         disableSwipeToOpen={false}
         ModalProps={{
@@ -125,31 +102,33 @@ export default function UserLayout({ children, showNav = true }: Props) {
             gap: "8px",
             paddingTop: "24px",
             minHeight: "calc(100dvh - 55px)",
-            paddingBottom: "60px",
+            paddingBottom: removeNav ? "16px" : "60px",
           }}
         >
-          <Box
-            sx={{
-              position: {
-                xs: "fixed",
-                sm: "fixed",
-                md: showNav ? "relative" : "none",
-              },
-              zIndex: 100,
-            }}
-          >
-            {
-              <StickyWrapper
-                sx={{
-                  height: "300px",
-                }}
-              >
-                <Paper>
-                  <NavigationBar showNav={showNav} />
-                </Paper>
-              </StickyWrapper>
-            }
-          </Box>
+          {!removeNav && (
+            <Box
+              sx={{
+                position: {
+                  xs: "fixed",
+                  sm: "fixed",
+                  md: showNav ? "relative" : "none",
+                },
+                zIndex: 100,
+              }}
+            >
+              {
+                <StickyWrapper
+                  sx={{
+                    height: "300px",
+                  }}
+                >
+                  <Paper>
+                    <NavigationBar showNav={showNav} />
+                  </Paper>
+                </StickyWrapper>
+              }
+            </Box>
+          )}
           <div>{children}</div>
         </Box>
       </Container>
