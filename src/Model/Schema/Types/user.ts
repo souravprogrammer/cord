@@ -10,6 +10,7 @@ export const User = `
         thread : [Thread!]
         password : String
         isFollowing (userId : ID) : Boolean!
+        verified : Boolean
 }
 `
 export const Follow = `

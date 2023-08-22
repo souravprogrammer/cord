@@ -70,7 +70,6 @@ export default function App({
             <CssBaseline />
             <Box
               sx={{
-                maxWidth: "100vw",
                 backgroundColor: "background.default",
               }}
             >

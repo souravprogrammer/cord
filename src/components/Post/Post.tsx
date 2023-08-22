@@ -132,22 +132,39 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
             gridArea: "name",
           }}
         >
-          <Link
-            href={"/profile/" + (user as any)?.id}
-            style={{ textDecoration: "none" }}
+          <Box
+            sx={{
+              display: "flex",
+              gap: "3px",
+              alignItems: "center",
+            }}
           >
-            <Typography
-              fontWeight={"bold"}
-              variant="body2"
-              sx={{
-                paddingRight: "4px",
-                whiteSpace: "nowrap",
-                color: "text.head",
-              }}
+            <Link
+              href={"/profile/" + (user as any)?.id}
+              style={{ textDecoration: "none" }}
             >
-              {user?.name}
-            </Typography>
-          </Link>
+              <Typography
+                fontWeight={"bold"}
+                variant="body2"
+                sx={{
+                  paddingRight: "4px",
+                  whiteSpace: "nowrap",
+                  color: "text.head",
+                }}
+              >
+                {user?.name}
+              </Typography>
+            </Link>
+            {user?.verified ? (
+              <img
+                style={{
+                  width: "12px",
+                  height: "12px",
+                }}
+                src={"/verified.png"}
+              />
+            ) : null}
+          </Box>
           <Box
             sx={{
               display: "flex",

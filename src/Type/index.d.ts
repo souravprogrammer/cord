@@ -5,6 +5,7 @@ export interface User {
     image: string;
     bio?: string;
     isFollowing?: boolean;
+    verified?: boolean;
 }
 export type Activity = {
     action: ActivityActions

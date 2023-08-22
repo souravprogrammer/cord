@@ -18,6 +18,10 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String
+    },
+    verified: {
+        type: Boolean,
+        default: false,
     }
 });
 export const User = mongoose.models.user || mongoose.model('user', UserSchema); 

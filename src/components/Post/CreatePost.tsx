@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { createThread } from "@/utils/QueryClient";
 import { User } from "@/Type";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -30,6 +30,7 @@ export default function CreatePost({}: Props) {
   const sharedThread = useStore((state) => state.thread);
   const setSharedThread = useStore((state) => state.setThread);
   const setOpenThreadModal = useStore((state) => state.setOpenThreadModal);
+  const queryClient = useQueryClient();
 
   const session = useSession();
   const user: User = session.data?.user as User;
@@ -41,6 +42,8 @@ export default function CreatePost({}: Props) {
       setDisable(true);
       setImages([]);
       setSharedThread(null);
+      queryClient.invalidateQueries(["home"]);
+      queryClient.invalidateQueries(["profile", user.id]);
     },
     onSettled: async () => {
       setText("");

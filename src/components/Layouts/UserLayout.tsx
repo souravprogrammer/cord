@@ -32,7 +32,7 @@ export default function UserLayout({
   const setThread = useStore((state) => state.setThread);
 
   return (
-    <>
+    <Box>
       <Header />
       {!removeNav && (
         <Fab
@@ -119,6 +119,6 @@ export default function UserLayout({
           <div>{children}</div>
         </Box>
       </Container>
-    </>
+    </Box>
   );
 }
