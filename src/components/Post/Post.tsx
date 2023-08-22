@@ -135,8 +135,9 @@ export default function Post({ user, thread, reposted, ...props }: Props) {
           <Box
             sx={{
               display: "flex",
-              gap: "3px",
+              gap: "1px",
               alignItems: "center",
+              paddingRight: "3px",
             }}
           >
             <Link

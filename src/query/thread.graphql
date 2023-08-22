@@ -19,6 +19,7 @@ query getHomeThreads($page: ThreadInput!) {
     timeStamp
     likes
     liked
+    verified
     thread {
       userId
       name
@@ -29,6 +30,7 @@ query getHomeThreads($page: ThreadInput!) {
       timeStamp
       likes
       liked
+      verified
     }
   }
 }
@@ -45,6 +47,7 @@ query getThread($threadId: String!) {
     timeStamp
     likes
     liked
+    verified
     thread {
       userId
       name
@@ -55,6 +58,7 @@ query getThread($threadId: String!) {
       timeStamp
       likes
       liked
+      verified
     }
   }
 }

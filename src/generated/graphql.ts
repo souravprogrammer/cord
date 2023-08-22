@@ -159,6 +159,7 @@ export type Thread = {
   threadId?: Maybe<Scalars['String']['output']>;
   timeStamp: Scalars['String']['output'];
   userId: Scalars['String']['output'];
+  verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type ThreadInput = {
@@ -179,6 +180,7 @@ export type User = {
   name: Scalars['String']['output'];
   password?: Maybe<Scalars['String']['output']>;
   thread?: Maybe<Array<Thread>>;
+  verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
 
@@ -252,14 +254,14 @@ export type GetHomeThreadsQueryVariables = Exact<{
 }>;
 
 
-export type GetHomeThreadsQuery = { __typename?: 'Query', getHomeThreads?: Array<{ __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null }> | null };
+export type GetHomeThreadsQuery = { __typename?: 'Query', getHomeThreads?: Array<{ __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, verified?: boolean | null, thread?: { __typename?: 'Thread', userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, verified?: boolean | null } | null }> | null };
 
 export type GetThreadQueryVariables = Exact<{
   threadId: Scalars['String']['input'];
 }>;
 
 
-export type GetThreadQuery = { __typename?: 'Query', getThread: { __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null } };
+export type GetThreadQuery = { __typename?: 'Query', getThread: { __typename?: 'Thread', _id: string, userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, verified?: boolean | null, thread?: { __typename?: 'Thread', userId: string, name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, verified?: boolean | null } | null } };
 
 export type GetUsersQueryVariables = Exact<{
   name: Scalars['String']['input'];
@@ -274,7 +276,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, name: string, image?: string | null, bio?: string | null, email: string, isFollowing: boolean, following?: { __typename?: 'follow', count: number } | null, followers?: { __typename?: 'follow', count: number } | null, thread?: Array<{ __typename?: 'Thread', _id: string, userId: string, media?: Array<string> | null, timeStamp: string, content?: string | null, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null } | null }> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', _id: string, name: string, image?: string | null, bio?: string | null, email: string, verified?: boolean | null, isFollowing: boolean, following?: { __typename?: 'follow', count: number } | null, followers?: { __typename?: 'follow', count: number } | null, thread?: Array<{ __typename?: 'Thread', _id: string, userId: string, media?: Array<string> | null, timeStamp: string, content?: string | null, likes?: number | null, liked?: boolean | null, thread?: { __typename?: 'Thread', name?: string | null, email?: string | null, image?: string | null, content?: string | null, media?: Array<string> | null, timeStamp: string, likes?: number | null, liked?: boolean | null, verified?: boolean | null } | null }> | null } | null };
 
 export type RegisterUserMutationVariables = Exact<{
   user: UserInput;
@@ -368,6 +370,7 @@ export const GetHomeThreadsDocument = gql`
     timeStamp
     likes
     liked
+    verified
     thread {
       userId
       name
@@ -378,6 +381,7 @@ export const GetHomeThreadsDocument = gql`
       timeStamp
       likes
       liked
+      verified
     }
   }
 }
@@ -395,6 +399,7 @@ export const GetThreadDocument = gql`
     timeStamp
     likes
     liked
+    verified
     thread {
       userId
       name
@@ -405,6 +410,7 @@ export const GetThreadDocument = gql`
       timeStamp
       likes
       liked
+      verified
     }
   }
 }
@@ -427,6 +433,7 @@ export const GetUserDocument = gql`
     image
     bio
     email
+    verified
     following {
       count
     }
@@ -451,6 +458,7 @@ export const GetUserDocument = gql`
         timeStamp
         likes
         liked
+        verified
       }
     }
   }

@@ -13,6 +13,7 @@ type Thread {
     likes : Int
     replies : Thread
     liked : Boolean
+    verified : Boolean
 }
 `
 

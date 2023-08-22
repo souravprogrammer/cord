@@ -90,7 +90,8 @@ async function getHomeThreads(parent: any, arg: any) {
                 media: "$threads.media",
                 name: "$user.name",
                 image: "$user.image",
-                email: "$user.email"
+                email: "$user.email",
+                verified: "$user.verified",
             }
         },
         {
@@ -134,9 +135,7 @@ async function getHomeThreads(parent: any, arg: any) {
                 email: { $first: "$email" },
                 liked: { $first: "$liked" },
                 threadId: { $first: "$threadId" },
-
-
-
+                verified: { $first: "$verified" }
             }
         },
         {
@@ -219,6 +218,7 @@ export const resolver = {
                         timeStamp: "$timeStamp",
                         likes: "$likes",
                         liked: "$liked",
+                        verified: "$user.verified",
 
                     }
                 }
@@ -510,7 +510,8 @@ export const resolver = {
                     media: "$media",
                     name: "$user.name",
                     image: "$user.image",
-                    email: "$user.email"
+                    email: "$user.email",
+                    verified: "$user.verified",
                 }
             }
             ])
